@@ -32,7 +32,7 @@ export default function MobileHamburgerMenu({
     label,
     path,
   }: {
-    icon: React.ComponentType<React.SVGProps<SVGSVGElement>>;
+    icon: any;
     label: string;
     path: string;
   }) => (
@@ -46,7 +46,7 @@ export default function MobileHamburgerMenu({
   );
 
   return (
-    <div className="md:hidden bg-white border-b shadow-sm">
+    <div className="bg-white border-b shadow-sm md:hidden">
       <nav className="flex flex-col py-2">
         <Item icon={Home} label="Home" path="/" />
         <Item icon={Dumbbell} label="Workouts" path="/workouts" />
@@ -55,7 +55,6 @@ export default function MobileHamburgerMenu({
         <Item icon={Users} label="Community" path="/community" />
         <Item icon={BookOpen} label="Blog" path="/blog" />
 
-        {/* Small separator */}
         <div className="h-px bg-gray-100 my-2 mx-6" />
 
         <Item icon={UserIcon} label="Profile" path="/profile" />
