@@ -6,141 +6,60 @@ import {
   TrendingUp,
   Users,
   BookOpen,
-  User,
-  LogOut,
+  User as UserIcon,
 } from 'lucide-react';
-import { Button } from './ui/button';
 
 interface MobileHamburgerMenuProps {
   isOpen: boolean;
   onClose: () => void;
 }
 
-export default function MobileHamburgerMenu({ isOpen, onClose }: MobileHamburgerMenuProps) {
+export default function MobileHamburgerMenu({
+  isOpen,
+  onClose,
+}: MobileHamburgerMenuProps) {
   const navigate = useNavigate();
 
-  return (
-    <div
-      className={`fixed inset-0 z-[120] md:hidden transition-opacity duration-200 ${
-        isOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
-      }`}
+  if (!isOpen) return null; // nothing when closed
+
+  const navClick = (path: string) => {
+    navigate(path);
+    onClose();
+  };
+
+  const Item = ({
+    icon: Icon,
+    label,
+    path,
+  }: {
+    icon: React.ComponentType<React.SVGProps<SVGSVGElement>>;
+    label: string;
+    path: string;
+  }) => (
+    <button
+      onClick={() => navClick(path)}
+      className="w-full flex items-center gap-3 px-6 py-3 text-base text-gray-800 hover:bg-gray-50 active:bg-gray-100"
     >
-      {/* Backdrop */}
-      <div
-        className="absolute inset-0 bg-black/40"
-        onClick={onClose}
-      />
+      <Icon className="w-5 h-5" />
+      <span>{label}</span>
+    </button>
+  );
 
-      {/* Slide-in panel */}
-      <div
-        className={`absolute left-0 top-0 h-full w-72 max-w-[80%] bg-white shadow-2xl flex flex-col transform transition-transform duration-200 ${
-          isOpen ? 'translate-x-0' : '-translate-x-full'
-        }`}
-      >
-        <div className="p-5 border-b flex items-center gap-2">
-          <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-orange-500 rounded-lg" />
-          <span className="text-xl font-bold">M2Fitness</span>
-        </div>
+  return (
+    <div className="md:hidden bg-white border-b shadow-sm">
+      <nav className="flex flex-col py-2">
+        <Item icon={Home} label="Home" path="/" />
+        <Item icon={Dumbbell} label="Workouts" path="/workouts" />
+        <Item icon={Utensils} label="Diet Plans" path="/diet/new-plan" />
+        <Item icon={TrendingUp} label="Progress" path="/progress" />
+        <Item icon={Users} label="Community" path="/community" />
+        <Item icon={BookOpen} label="Blog" path="/blog" />
 
-        <nav className="flex-1 p-4 space-y-2">
-          <Button
-            variant="ghost"
-            className="w-full justify-start"
-            onClick={() => {
-              navigate('/dashboard');
-              onClose();
-            }}
-          >
-            <Home className="w-5 h-5 mr-3" />
-            Home
-          </Button>
+        {/* Small separator */}
+        <div className="h-px bg-gray-100 my-2 mx-6" />
 
-          <Button
-            variant="ghost"
-            className="w-full justify-start"
-            onClick={() => {
-              navigate('/workouts');
-              onClose();
-            }}
-          >
-            <Dumbbell className="w-5 h-5 mr-3" />
-            Workouts
-          </Button>
-
-          <Button
-            variant="ghost"
-            className="w-full justify-start"
-            onClick={() => {
-              navigate('/diet/new-plan');
-              onClose();
-            }}
-          >
-            <Utensils className="w-5 h-5 mr-3" />
-            Diet Plans
-          </Button>
-
-          <Button
-            variant="ghost"
-            className="w-full justify-start"
-            onClick={() => {
-              navigate('/progress');
-              onClose();
-            }}
-          >
-            <TrendingUp className="w-5 h-5 mr-3" />
-            Progress
-          </Button>
-
-          <Button
-            variant="ghost"
-            className="w-full justify-start"
-            onClick={() => {
-              navigate('/community');
-              onClose();
-            }}
-          >
-            <Users className="w-5 h-5 mr-3" />
-            Community
-          </Button>
-
-          <Button
-            variant="ghost"
-            className="w-full justify-start"
-            onClick={() => {
-              navigate('/blog');
-              onClose();
-            }}
-          >
-            <BookOpen className="w-5 h-5 mr-3" />
-            Blog
-          </Button>
-        </nav>
-
-        <div className="p-4 border-t space-y-2">
-          <Button
-            variant="ghost"
-            className="w-full justify-start"
-            onClick={() => {
-              navigate('/profile');
-              onClose();
-            }}
-          >
-            <User className="w-5 h-5 mr-3" />
-            Profile
-          </Button>
-          <Button
-            variant="ghost"
-            className="w-full justify-start text-red-600 hover:text-red-700 hover:bg-red-50"
-            onClick={() => {
-              navigate('/');
-              onClose();
-            }}
-          >
-            <LogOut className="w-5 h-5 mr-3" />
-            Logout
-          </Button>
-        </div>
-      </div>
+        <Item icon={UserIcon} label="Profile" path="/profile" />
+      </nav>
     </div>
   );
 }
