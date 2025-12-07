@@ -1,4 +1,3 @@
-// src/components/MobileBottomNav.tsx
 import { useNavigate, useLocation } from "react-router-dom";
 import {
   Utensils,
@@ -23,8 +22,8 @@ export default function MobileBottomNav() {
   ];
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 bg-white border-t shadow-lg z-[999] md:hidden">
-      <div className="flex justify-between px-2 py-2">
+    <nav className="fixed bottom-0 left-0 right-0 bg-white border-t shadow-xl z-[999] md:hidden">
+      <div className="flex justify-between px-3 py-2 gap-x-3">
         {items.map((item) => {
           const Icon = item.icon;
           const isActive = location.pathname.startsWith(item.path);
@@ -40,10 +39,10 @@ export default function MobileBottomNav() {
               `}
             >
               {/* ICON */}
-              <Icon className="w-[16px] h-[16px] mb-[3px]" />
+              <Icon className="w-[14px] h-[14px] mb-[2px]" />
 
               {/* TEXT */}
-              <span className="text-[10px] leading-none tracking-wide">
+              <span className="text-[9px] leading-none tracking-tight">
                 {item.label}
               </span>
             </button>
