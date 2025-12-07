@@ -26,7 +26,6 @@ import { ImageWithFallback } from './figma/ImageWithFallback';
 import { toast } from 'sonner';
 
 // ✅ NEW: shared mobile header + bottom nav
-import MobileHeader from './MobileHeader';
 import MobileBottomNav from './MobileBottomNav';
 
 interface Video {
@@ -275,8 +274,7 @@ const handleVideoShare = (videoId: number) => {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* 📱 Global mobile header */}
-      <MobileHeader />
+      
 
       {/* 🖥️ Sidebar – desktop ONLY */}
       <aside className="hidden md:block fixed left-0 top-0 h-full w-64 bg-white border-r shadow-sm z-40">
