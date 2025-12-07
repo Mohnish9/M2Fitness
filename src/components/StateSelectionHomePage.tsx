@@ -10,6 +10,7 @@ import heroImage from 'figma:asset/2187b0063c69775fee81df986b7fd4d50267f579.png'
 import indiaLandmarksBg from 'figma:asset/56785eb625af8e5f38f71ef958e29a95fff40533.png';
 import MobileHeader from './MobileHeader';
 import MobileBottomNav from './MobileBottomNav';
+import MobileHamburgerMenu from './MobileHamburgerMenu';
 
 
 export default function StateSelectionHomePage() {
@@ -19,6 +20,8 @@ export default function StateSelectionHomePage() {
   const [isSearchFocused, setIsSearchFocused] = useState(false);
   const [workoutFilter, setWorkoutFilter] = useState<'all' | 'beginner' | 'intermediate' | 'advanced'>('all');
   const [loadingState, setLoadingState] = useState<string | null>(null);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
 
   // State-wise food data - Direct links to personalized diet plans
   const stateFood = [
@@ -152,9 +155,11 @@ export default function StateSelectionHomePage() {
   };
 
   return (
-    <div className="min-h-screen bg-white">
-           {/* Mobile Header (only on phones) */}
-      <MobileHeader />
+   <div className="min-h-screen bg-white">
+  {/* Mobile Header (only on phones) */}
+  <MobileHeader
+    onMenuClick={() => setIsMobileMenuOpen(true)}
+  />
 
       {/* 🔹 Tier 1 — Navigation Bar (desktop only) */}
 <nav className="sticky top-0 left-0 right-0 z-50 bg-white border-b shadow-sm hidden md:block">
@@ -922,6 +927,11 @@ export default function StateSelectionHomePage() {
       
       {/* Mobile Bottom Navigation */}
       <MobileBottomNav />
+      {/* Mobile side menu */}
+<MobileHamburgerMenu
+  isOpen={isMobileMenuOpen}
+  onClose={() => setIsMobileMenuOpen(false)}
+/>
     </div>
   );
 }

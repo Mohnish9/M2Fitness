@@ -2,22 +2,22 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Search, Menu, User } from 'lucide-react';
 import { Input } from './ui/input';
-import MobileHamburgerMenu from './MobileHamburgerMenu';
 
 interface MobileHeaderProps {
   onSearch?: (query: string) => void;
   showSearch?: boolean;
-  showMenu?: boolean; // set to false on pages where you don't want hamburger
+  showMenu?: boolean;       // controls if hamburger shows
+  onMenuClick?: () => void; // parent controls menu opening
 }
 
 export default function MobileHeader({
   onSearch,
   showSearch = true,
   showMenu = true,
+  onMenuClick,
 }: MobileHeaderProps) {
   const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState('');
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const handleSearch = () => {
     if (searchQuery.trim() && onSearch) {
@@ -35,7 +35,9 @@ export default function MobileHeader({
             {/* Left: Hamburger or spacer */}
             {showMenu ? (
               <button
-                onClick={() => setIsMenuOpen(true)}
+                onClick={() => {
+                  if (onMenuClick) onMenuClick();
+                }}
                 className="p-2 hover:bg-gray-100 rounded-lg transition-colors -ml-2"
                 aria-label="Open menu"
               >
@@ -82,14 +84,6 @@ export default function MobileHeader({
           )}
         </div>
       </div>
-
-      {/* Slide-in Menu */}
-      {showMenu && (
-        <MobileHamburgerMenu
-          isOpen={isMenuOpen}
-          onClose={() => setIsMenuOpen(false)}
-        />
-      )}
     </>
   );
 }
