@@ -23,7 +23,7 @@ export default function MobileBottomNav() {
 
   return (
     <nav className="fixed bottom-0 left-0 right-0 bg-white border-t shadow-xl z-[999] md:hidden">
-      <div className="flex justify-between px-3 py-2 gap-x-3">
+      <div className="flex justify-between px-4 py-3 gap-x-5">
         {items.map((item) => {
           const Icon = item.icon;
           const isActive = location.pathname.startsWith(item.path);
@@ -38,11 +38,11 @@ export default function MobileBottomNav() {
                 ${isActive ? "text-orange-500" : "text-gray-500"}
               `}
             >
-              {/* ICON */}
-              <Icon className="w-[14px] h-[14px] mb-[2px]" />
+              {/* Smaller Icon */}
+              <Icon className="w-[12px] h-[12px] mb-[3px]" />
 
-              {/* TEXT */}
-              <span className="text-[9px] leading-none tracking-tight">
+              {/* Smaller Text */}
+              <span className="text-[8px] leading-none tracking-tight">
                 {item.label}
               </span>
             </button>
