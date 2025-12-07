@@ -6,6 +6,7 @@ import {
   TrendingUp,
   Users,
   BookOpen,
+  Heart,          // ✅ NEW: Anatomy icon
   User as UserIcon,
 } from 'lucide-react';
 
@@ -50,6 +51,8 @@ export default function MobileHamburgerMenu({
       <nav className="flex flex-col py-2">
         <Item icon={Home} label="Home" path="/" />
         <Item icon={Dumbbell} label="Workouts" path="/workouts" />
+        {/* ✅ NEW: Anatomy menu item */}
+        <Item icon={Heart} label="Anatomy" path="/muscle-anatomy" />
         <Item icon={Utensils} label="Diet Plans" path="/diet/new-plan" />
         <Item icon={TrendingUp} label="Progress" path="/progress" />
         <Item icon={Users} label="Community" path="/community" />
