@@ -4,14 +4,30 @@ import { Button } from './ui/button';
 import { Card, CardContent } from './ui/card';
 import { Input } from './ui/input';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from './ui/tabs';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select';
-import { Home, Dumbbell, TrendingUp, User, LogOut, Utensils, Users, Play, Heart, MessageCircle, Share2, Upload, Search, MapPin, Trophy, Filter, Plus, Clock } from 'lucide-react';
+import {
+  Home,
+  Dumbbell,
+  TrendingUp,
+  User,
+  Utensils,
+  Users,
+  Play,
+  Heart,
+  MessageCircle,
+  Share2,
+  Search,
+  MapPin,
+  Filter,
+  Plus,
+  Clock,
+  ArrowLeft,
+} from 'lucide-react';
 import { ImageWithFallback } from './figma/ImageWithFallback';
 import { toast } from 'sonner';
+
+// ✅ NEW: shared mobile header + bottom nav
 import MobileHeader from './MobileHeader';
 import MobileBottomNav from './MobileBottomNav';
-import PageHeader from './PageHeader';
-
 
 interface Video {
   id: number;
@@ -46,10 +62,12 @@ interface UserPost {
 export default function CommunityPage() {
   const navigate = useNavigate();
   const location = useLocation();
+
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedState, setSelectedState] = useState('All States');
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [userPosts, setUserPosts] = useState<UserPost[]>([]);
+
   const userState = localStorage.getItem('userState') || 'Punjab';
 
   // Load user posts from localStorage
@@ -63,7 +81,7 @@ export default function CommunityPage() {
     const now = new Date();
     const past = new Date(timestamp);
     const diffInSeconds = Math.floor((now.getTime() - past.getTime()) / 1000);
-    
+
     if (diffInSeconds < 60) return 'Just now';
     if (diffInSeconds < 3600) return `${Math.floor(diffInSeconds / 60)}m ago`;
     if (diffInSeconds < 86400) return `${Math.floor(diffInSeconds / 3600)}h ago`;
@@ -79,7 +97,7 @@ export default function CommunityPage() {
           return {
             ...post,
             likes: isLiked ? post.likes - 1 : post.likes + 1,
-            likedByUser: !isLiked
+            likedByUser: !isLiked,
           };
         }
         return post;
@@ -90,21 +108,25 @@ export default function CommunityPage() {
     toast.success('👍 Like updated!');
   };
 
-  const handleComment = (postId: string) => {
-    toast.info('💬 Comments Coming Soon!', { description: 'Comment feature will be available soon' });
+  const handleComment = () => {
+    toast.info('💬 Comments Coming Soon!', {
+      description: 'Comment feature will be available soon',
+    });
   };
 
   const handleShare = (postId: string) => {
     const post = userPosts.find(p => p.id === postId);
     if (post) {
       setUserPosts(prev => {
-        const updated = prev.map(p => 
-          p.id === postId ? { ...p, shares: p.shares + 1 } : p
+        const updated = prev.map(p =>
+          p.id === postId ? { ...p, shares: p.shares + 1 } : p,
         );
         localStorage.setItem('userPosts', JSON.stringify(updated));
         return updated;
       });
-      toast.success('🔗 Link Copied!', { description: 'Post link copied to clipboard' });
+      toast.success('🔗 Link Copied!', {
+        description: 'Post link copied to clipboard',
+      });
     }
   };
 
@@ -121,7 +143,7 @@ export default function CommunityPage() {
       comments: 89,
       state: 'Tamil Nadu',
       category: 'workout',
-      isFromUserState: userState === 'Tamil Nadu'
+      isFromUserState: userState === 'Tamil Nadu',
     },
     {
       id: 2,
@@ -135,7 +157,7 @@ export default function CommunityPage() {
       comments: 156,
       state: 'Punjab',
       category: 'meal',
-      isFromUserState: userState === 'Punjab'
+      isFromUserState: userState === 'Punjab',
     },
     {
       id: 3,
@@ -149,7 +171,7 @@ export default function CommunityPage() {
       comments: 312,
       state: 'Maharashtra',
       category: 'transformation',
-      isFromUserState: userState === 'Maharashtra'
+      isFromUserState: userState === 'Maharashtra',
     },
     {
       id: 4,
@@ -163,7 +185,7 @@ export default function CommunityPage() {
       comments: 94,
       state: 'Tamil Nadu',
       category: 'meal',
-      isFromUserState: userState === 'Tamil Nadu'
+      isFromUserState: userState === 'Tamil Nadu',
     },
     {
       id: 5,
@@ -177,7 +199,7 @@ export default function CommunityPage() {
       comments: 201,
       state: 'Delhi',
       category: 'workout',
-      isFromUserState: userState === 'Delhi'
+      isFromUserState: userState === 'Delhi',
     },
     {
       id: 6,
@@ -191,7 +213,7 @@ export default function CommunityPage() {
       comments: 127,
       state: 'Kerala',
       category: 'meal',
-      isFromUserState: userState === 'Kerala'
+      isFromUserState: userState === 'Kerala',
     },
     {
       id: 7,
@@ -205,7 +227,7 @@ export default function CommunityPage() {
       comments: 445,
       state: 'Maharashtra',
       category: 'motivation',
-      isFromUserState: userState === 'Maharashtra'
+      isFromUserState: userState === 'Maharashtra',
     },
     {
       id: 8,
@@ -219,14 +241,15 @@ export default function CommunityPage() {
       comments: 78,
       state: 'Karnataka',
       category: 'workout',
-      isFromUserState: userState === 'Karnataka'
-    }
+      isFromUserState: userState === 'Karnataka',
+    },
   ];
 
   const filteredVideos = videos
     .filter(video => {
-      const matchesSearch = video.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                          video.author.toLowerCase().includes(searchQuery.toLowerCase());
+      const matchesSearch =
+        video.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        video.author.toLowerCase().includes(searchQuery.toLowerCase());
       const matchesState = selectedState === 'All States' || video.state === selectedState;
       const matchesCategory = selectedCategory === 'all' || video.category === selectedCategory;
       return matchesSearch && matchesState && matchesCategory;
@@ -237,28 +260,32 @@ export default function CommunityPage() {
       return 0;
     });
 
-  const handleVideoLike = (videoId: number) => {
-    toast.success('👍 Liked!');
-  };
+ const handleVideoLike = (videoId: number) => {
+  // you can use videoId later if needed
+  toast.success('👍 Liked!');
+};
 
-  const handleVideoComment = (videoId: number) => {
-    toast.info('💬 Comments Coming Soon!');
-  };
+const handleVideoComment = (videoId: number) => {
+  toast.info('💬 Comments Coming Soon!');
+};
 
-  const handleVideoShare = (videoId: number) => {
-    toast.success('🔗 Link Copied!');
-  };
+const handleVideoShare = (videoId: number) => {
+  toast.success('🔗 Link Copied!');
+};
 
   return (
     <div className="min-h-screen bg-gray-50">
-       {/* Mobile header */}
+      {/* 📱 Global mobile header */}
       <MobileHeader />
-      {/* Sidebar */}
-      <aside className="hidden md:block fixed left-0 top-0 h-full w-64 bg-white border-r shadow-sm z-50">
+
+      {/* 🖥️ Sidebar – desktop ONLY */}
+      <aside className="hidden md:block fixed left-0 top-0 h-full w-64 bg-white border-r shadow-sm z-40">
         <div className="p-6">
           <div className="flex items-center gap-2 mb-8">
-            <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-orange-500 rounded-lg"></div>
-            <span className="text-xl" style={{ fontWeight: 700 }}>M2Fitnes</span>
+            <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-orange-500 rounded-lg" />
+            <span className="text-xl" style={{ fontWeight: 700 }}>
+              M2Fitnes
+            </span>
           </div>
           <nav className="space-y-2">
             <Link to="/dashboard">
@@ -286,7 +313,10 @@ export default function CommunityPage() {
               </Button>
             </Link>
             <Link to="/community">
-              <Button variant="default" className="w-full justify-start bg-gradient-to-r from-blue-500 to-purple-600">
+              <Button
+                variant="default"
+                className="w-full justify-start bg-gradient-to-r from-blue-500 to-purple-600"
+              >
                 <Users className="w-5 h-5 mr-3" />
                 Community
               </Button>
@@ -300,18 +330,40 @@ export default function CommunityPage() {
           </nav>
         </div>
       </aside>
-      <PageHeader title="Community Feed" />
 
-
-      {/* Main Content */}
-      <main className="pt-20 pb-24 md:ml-64 p-4 md:p-8">
+      {/* MAIN CONTENT */}
+      <main className="px-4 pb-20 pt-4 md:px-8 md:pt-8 md:ml-64">
         <div className="max-w-7xl mx-auto">
-          {/* Header */}
-          <div className="mb-8">
+          {/* Mobile page title bar with back arrow (like your screenshot) */}
+          <div className="md:hidden flex items-center justify-between mb-4">
+            <button
+              onClick={() => navigate(-1)}
+              className="flex items-center gap-2 text-gray-800"
+            >
+              <ArrowLeft className="w-5 h-5" />
+            </button>
+            <p className="text-base font-semibold">Community Feed</p>
+            <div className="w-5" /> {/* spacer */}
+          </div>
+
+          {/* Desktop header */}
+          <div className="mb-8 hidden md:block">
             <h1 className="text-4xl mb-2" style={{ fontWeight: 700 }}>
               Community Feed
             </h1>
-            <p className="text-xl text-gray-600">Learn & Share with fitness enthusiasts across India</p>
+            <p className="text-xl text-gray-600">
+              Learn & Share with fitness enthusiasts across India
+            </p>
+          </div>
+
+          {/* Mobile subtitle (under the title bar) */}
+          <div className="md:hidden mb-4">
+            <h1 className="text-3xl mb-2" style={{ fontWeight: 700 }}>
+              Community Feed
+            </h1>
+            <p className="text-base text-gray-600">
+              Learn & Share with fitness enthusiasts across India
+            </p>
           </div>
 
           {/* Search & Filters */}
@@ -325,30 +377,31 @@ export default function CommunityPage() {
                       placeholder="Search videos, creators, or tags..."
                       className="pl-10"
                       value={searchQuery}
-                      onChange={(e) => setSearchQuery(e.target.value)}
+                      onChange={e => setSearchQuery(e.target.value)}
                     />
                   </div>
                 </div>
 
-                <div className="flex gap-4">
-                  <Select value={selectedState} onValueChange={setSelectedState}>
-                    <SelectTrigger className="w-[200px]">
-                      <MapPin className="w-4 h-4 mr-2" />
-                      <SelectValue placeholder="Filter by state" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="All States">All States</SelectItem>
-                      <SelectItem value="Punjab">Punjab</SelectItem>
-                      <SelectItem value="Tamil Nadu">Tamil Nadu</SelectItem>
-                      <SelectItem value="Karnataka">Karnataka</SelectItem>
-                      <SelectItem value="Delhi">Delhi</SelectItem>
-                      <SelectItem value="Kerala">Kerala</SelectItem>
-                      <SelectItem value="Maharashtra">Maharashtra</SelectItem>
-                    </SelectContent>
-                  </Select>
+                <div className="flex flex-col md:flex-row gap-4">
+                  {/* State filter */}
+                  <div className="flex items-center gap-2">
+                    <button
+                      className="flex items-center gap-2 px-4 py-2 rounded-full border bg-white text-sm"
+                      // you can hook a real select here later
+                    >
+                      <MapPin className="w-4 h-4" />
+                      <span>{selectedState}</span>
+                    </button>
+                  </div>
 
-                  <Tabs value={selectedCategory} onValueChange={setSelectedCategory} className="flex-1">
-                    <TabsList>
+                  {/* Category Tabs */}
+                 <Tabs
+  value={selectedCategory}
+  onValueChange={(val: string) => setSelectedCategory(val)}
+  className="flex-1"
+>
+
+                    <TabsList className="w-full flex flex-wrap justify-start">
                       <TabsTrigger value="all">All</TabsTrigger>
                       <TabsTrigger value="workout">Workouts</TabsTrigger>
                       <TabsTrigger value="meal">Meals</TabsTrigger>
@@ -367,8 +420,11 @@ export default function CommunityPage() {
               <h2 className="text-2xl" style={{ fontWeight: 700 }}>
                 Latest Community Posts
               </h2>
-              {userPosts.map((post) => (
-                <Card key={post.id} className="overflow-hidden hover:shadow-xl transition-shadow border-2 border-green-200">
+              {userPosts.map(post => (
+                <Card
+                  key={post.id}
+                  className="overflow-hidden hover:shadow-xl transition-shadow border-2 border-green-200"
+                >
                   <CardContent className="p-6">
                     {/* User Info */}
                     <div className="flex items-center gap-3 mb-4">
@@ -394,27 +450,37 @@ export default function CommunityPage() {
 
                     {/* Caption */}
                     {post.caption && (
-                      <p className="text-gray-800 mb-4 whitespace-pre-wrap">{post.caption}</p>
+                      <p className="text-gray-800 mb-4 whitespace-pre-wrap">
+                        {post.caption}
+                      </p>
                     )}
 
                     {/* Media Grid */}
                     {post.media.length > 0 && (
-                      <div className={`grid gap-2 mb-4 ${
-                        post.media.length === 1 ? 'grid-cols-1' : 
-                        post.media.length === 2 ? 'grid-cols-2' : 
-                        post.media.length === 3 ? 'grid-cols-3' : 
-                        'grid-cols-2'
-                      }`}>
-                        {post.media.map((media) => (
-                          <div key={media.id} className="relative rounded-lg overflow-hidden bg-gray-100">
+                      <div
+                        className={`grid gap-2 mb-4 ${
+                          post.media.length === 1
+                            ? 'grid-cols-1'
+                            : post.media.length === 2
+                            ? 'grid-cols-2'
+                            : post.media.length === 3
+                            ? 'grid-cols-3'
+                            : 'grid-cols-2'
+                        }`}
+                      >
+                        {post.media.map(media => (
+                          <div
+                            key={media.id}
+                            className="relative rounded-lg overflow-hidden bg-gray-100"
+                          >
                             {media.type === 'photo' ? (
-                              <img 
-                                src={media.url} 
+                              <img
+                                src={media.url}
                                 alt={media.name}
                                 className="w-full h-64 object-cover"
                               />
                             ) : (
-                              <video 
+                              <video
                                 src={media.url}
                                 className="w-full h-64 object-cover"
                                 controls
@@ -428,27 +494,37 @@ export default function CommunityPage() {
                     {/* Hashtags */}
                     {post.hashtags && (
                       <div className="flex flex-wrap gap-2 mb-4">
-                        {post.hashtags.split(' ').filter(tag => tag).map((tag, idx) => (
-                          <span key={idx} className="text-sm text-blue-600 hover:underline cursor-pointer">
-                            {tag}
-                          </span>
-                        ))}
+                        {post.hashtags
+                          .split(' ')
+                          .filter(tag => tag)
+                          .map((tag, idx) => (
+                            <span
+                              key={idx}
+                              className="text-sm text-blue-600 hover:underline cursor-pointer"
+                            >
+                              {tag}
+                            </span>
+                          ))}
                       </div>
                     )}
 
                     {/* Action Buttons */}
-                    <div className="flex items-center gap-6 pt-4 border-t border-gray-200">
+                    <div className="flex items-center gap-6 pt-4 border-top border-gray-200">
                       <button
                         onClick={() => handleLike(post.id)}
                         className={`flex items-center gap-2 transition-colors ${
-                          post.likedByUser ? 'text-red-500' : 'text-gray-600 hover:text-red-500'
+                          post.likedByUser
+                            ? 'text-red-500'
+                            : 'text-gray-600 hover:text-red-500'
                         }`}
                       >
-                        <Heart className={`w-5 h-5 ${post.likedByUser ? 'fill-current' : ''}`} />
+                        <Heart
+                          className={`w-5 h-5 ${post.likedByUser ? 'fill-current' : ''}`}
+                        />
                         <span>{post.likes}</span>
                       </button>
                       <button
-                        onClick={() => handleComment(post.id)}
+                        onClick={handleComment}
                         className="flex items-center gap-2 text-gray-600 hover:text-blue-600 transition-colors"
                       >
                         <MessageCircle className="w-5 h-5" />
@@ -475,8 +551,11 @@ export default function CommunityPage() {
             </h2>
             {filteredVideos.length > 0 ? (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {filteredVideos.map((video) => (
-                  <Card key={video.id} className="overflow-hidden hover:shadow-xl transition-shadow cursor-pointer group">
+                {filteredVideos.map(video => (
+                  <Card
+                    key={video.id}
+                    className="overflow-hidden hover:shadow-xl transition-shadow cursor-pointer group"
+                  >
                     <div className="relative">
                       <ImageWithFallback
                         src={video.thumbnail}
@@ -518,7 +597,7 @@ export default function CommunityPage() {
                           </div>
                           <div className="flex items-center gap-4 mt-3">
                             <button
-                              onClick={(e) => {
+                              onClick={e => {
                                 e.stopPropagation();
                                 handleVideoLike(video.id);
                               }}
@@ -528,7 +607,7 @@ export default function CommunityPage() {
                               <span className="text-sm">{video.likes}</span>
                             </button>
                             <button
-                              onClick={(e) => {
+                              onClick={e => {
                                 e.stopPropagation();
                                 handleVideoComment(video.id);
                               }}
@@ -538,7 +617,7 @@ export default function CommunityPage() {
                               <span className="text-sm">{video.comments}</span>
                             </button>
                             <button
-                              onClick={(e) => {
+                              onClick={e => {
                                 e.stopPropagation();
                                 handleVideoShare(video.id);
                               }}
@@ -567,14 +646,14 @@ export default function CommunityPage() {
       {/* Floating Action Button - Create Post */}
       <button
         onClick={() => navigate('/community/create-post')}
-        className="fixed bottom-24 right-6 md:bottom-8 md:right-8w-16 h-16 bg-gradient-to-r from-orange-500 to-purple-600 hover:from-orange-600 hover:to-purple-700 rounded-full shadow-2xl hover:shadow-3xl flex items-center justify-center z-50 transition-all hover:scale-110"
+        className="fixed bottom-24 right-8 w-16 h-16 bg-gradient-to-r from-orange-500 to-purple-600 hover:from-orange-600 hover:to-purple-700 rounded-full shadow-2xl hover:shadow-3xl flex items-center justify-center z-50 transition-all hover:scale-110"
         aria-label="Create Post"
       >
         <Plus className="w-8 h-8 text-white" strokeWidth={3} />
       </button>
-      <MobileBottomNav />
 
+      {/* Mobile bottom nav */}
+      <MobileBottomNav />
     </div>
-    
   );
 }
