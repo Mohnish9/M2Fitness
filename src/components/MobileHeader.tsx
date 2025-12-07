@@ -7,9 +7,15 @@ import MobileHamburgerMenu from './MobileHamburgerMenu';
 interface MobileHeaderProps {
   onSearch?: (query: string) => void;
   showSearch?: boolean;
+  /** NEW: control whether hamburger / side menu shows on mobile */
+  showMenu?: boolean;
 }
 
-export default function MobileHeader({ onSearch, showSearch = true }: MobileHeaderProps) {
+export default function MobileHeader({
+  onSearch,
+  showSearch = true,
+  showMenu = true,
+}: MobileHeaderProps) {
   const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState('');
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -27,19 +33,24 @@ export default function MobileHeader({ onSearch, showSearch = true }: MobileHead
         <div className="sticky top-0 left-0 right-0 z-40 bg-white border-b shadow-sm">
           {/* Top Bar with Hamburger, Logo, and Login */}
           <div className="flex items-center justify-between px-4 py-3">
-            {/* Left: Hamburger Menu */}
-            <button
-              onClick={() => setIsMenuOpen(true)}
-              className="p-2 hover:bg-gray-100 rounded-lg transition-colors -ml-2"
-              aria-label="Open menu"
-            >
-              <Menu className="w-6 h-6 text-gray-700" />
-            </button>
+            {/* Left: Hamburger Menu (optional) */}
+            {showMenu ? (
+              <button
+                onClick={() => setIsMenuOpen(true)}
+                className="p-2 hover:bg-gray-100 rounded-lg transition-colors -ml-2"
+                aria-label="Open menu"
+              >
+                <Menu className="w-6 h-6 text-gray-700" />
+              </button>
+            ) : (
+              // spacer to keep logo centered when menu is hidden
+              <div className="w-10" />
+            )}
 
             {/* Center: Logo */}
             <div className="flex items-center gap-2 absolute left-1/2 transform -translate-x-1/2">
-              <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-orange-500 rounded-lg"></div>
-              <span className="text-xl" style={{ fontWeight: 700 }}>M2Fitnes</span>
+              <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-orange-500 rounded-lg" />
+              <span className="text-xl font-bold">M2Fitnes</span>
             </div>
 
             {/* Right: Login/Profile */}
@@ -74,8 +85,13 @@ export default function MobileHeader({ onSearch, showSearch = true }: MobileHead
         </div>
       </div>
 
-      {/* Hamburger Menu */}
-      <MobileHamburgerMenu isOpen={isMenuOpen} onClose={() => setIsMenuOpen(false)} />
+      {/* Side menu only if showMenu is true */}
+      {showMenu && (
+        <MobileHamburgerMenu
+          isOpen={isMenuOpen}
+          onClose={() => setIsMenuOpen(false)}
+        />
+      )}
     </>
   );
 }

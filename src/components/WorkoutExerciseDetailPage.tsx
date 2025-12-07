@@ -3266,8 +3266,9 @@ export default function WorkoutExerciseDetailPage() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-       {/* ⭐ Mobile Header */}
-    <MobileHeader />
+       {/* Mobile header WITHOUT side menu or search */}
+    <MobileHeader showSearch={false} showMenu={false} />
+
 
       {/* Animated Exercise Demo Modal */}
       {showAnimatedDemo && (
@@ -3279,13 +3280,13 @@ export default function WorkoutExerciseDetailPage() {
       )}
       
 
-      {/* Sidebar */}
-      <aside className="fixed left-0 top-0 h-full w-64 bg-white border-r shadow-sm z-50">
-        <div className="p-6">
-          <div className="flex items-center gap-2 mb-8">
-            <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-orange-500 rounded-lg"></div>
-            <span className="text-xl" style={{ fontWeight: 700 }}>M2Fitness</span>
-          </div>
+      {/* Sidebar - desktop only */}
+    <aside className="hidden md:block fixed left-0 top-0 h-full w-64 bg-white border-r shadow-sm z-40">
+      <div className="p-6">
+        <div className="flex items-center gap-2 mb-8">
+          <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-orange-500 rounded-lg"></div>
+          <span className="text-xl" style={{ fontWeight: 700 }}>M2Fitness</span>
+        </div>
           <nav className="space-y-2">
             <Link to="/dashboard">
               <Button variant="ghost" className="w-full justify-start">
@@ -3328,8 +3329,7 @@ export default function WorkoutExerciseDetailPage() {
       </aside>
 
       {/* Main Content */}
-      <div className="ml-64 p-8">
-        {/* Breadcrumbs */}
+        <div className="px-4 pb-20 pt-4 md:px-8 md:pt-8 md:ml-64 max-w-5xl mx-auto">        {/* Breadcrumbs */}
         <Breadcrumb className="mb-4">
           <BreadcrumbList>
             <BreadcrumbItem>
@@ -3744,8 +3744,8 @@ export default function WorkoutExerciseDetailPage() {
           </Card>
         </div>
       </div>
-      {/* ⭐ Mobile bottom navigation */}
-    <MobileBottomNav />
+       {/* Mobile bottom nav */}
+      <MobileBottomNav />
     </div>
   );
 }
