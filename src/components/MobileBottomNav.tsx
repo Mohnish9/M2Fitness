@@ -1,4 +1,4 @@
-
+// src/components/MobileBottomNav.tsx
 import { useNavigate, useLocation } from "react-router-dom";
 import {
   Utensils,
@@ -23,9 +23,16 @@ export default function MobileBottomNav() {
   ];
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 bg-white border-t shadow-xl z-[999] md:hidden">
-      <div className="flex justify-center items-center px-1 py-2 space-x-4">
-
+    <nav
+      className="
+        fixed bottom-0 left-0 right-0
+        bg-white border-t border-gray-200
+        shadow-[0_-2px_8px_rgba(0,0,0,0.06)]
+        z-[999]
+        md:hidden
+      "
+    >
+      <div className="flex justify-around px-3 py-[6px]">
         {items.map((item) => {
           const Icon = item.icon;
           const isActive = location.pathname.startsWith(item.path);
@@ -34,23 +41,26 @@ export default function MobileBottomNav() {
             <button
               key={item.label}
               onClick={() => navigate(item.path)}
-              className={`
-                flex flex-col items-center justify-center
-                ${isActive ? "text-orange-500" : "text-gray-500"}
-                min-w-[40px]
-              `}
+              className="flex flex-1 justify-center"
             >
-              {/* EXTRA SMALL ICON */}
-              <Icon className="w-[5px] h-[5px] mb-[1px]" />
+              <div
+                className={`
+                  flex flex-col items-center
+                  ${isActive ? "text-orange-500" : "text-gray-500"}
+                  w-[58px]   /* fixed inner width so text never touches */
+                `}
+              >
+                {/* small icon */}
+                <Icon className="w-[15px] h-[15px] mb-[2px]" />
 
-              {/* EXTRA SMALL TEXT */}
-              <span className="text-[6px] leading-none">
-                {item.label}
-              </span>
+                {/* tiny label with breathing room */}
+                <span className="text-[9px] leading-[10px] whitespace-nowrap">
+                  {item.label}
+                </span>
+              </div>
             </button>
           );
         })}
-
       </div>
     </nav>
   );
