@@ -1,63 +1,45 @@
-import { useNavigate, useLocation } from "react-router-dom";
-import {
-  Utensils,
-  Dumbbell,
-  Heart,
-  Calculator,
-  Users,
-  BookOpen,
-} from "lucide-react";
+import { useNavigate, useLocation } from 'react-router-dom';
+import { Utensils, Dumbbell, Users, Calculator, BookOpen } from 'lucide-react';
 
 export default function MobileBottomNav() {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const items = [
-    { label: "Diet", icon: Utensils, path: "/diet/new-plan" },
-    { label: "Workout", icon: Dumbbell, path: "/workouts" },
-    { label: "Anatomy", icon: Heart, path: "/muscle-anatomy" },
-    { label: "Protein", icon: Calculator, path: "/protein-calculator" },
-    { label: "Community", icon: Users, path: "/community" },
-    { label: "Blog", icon: BookOpen, path: "/blog" },
+  const navItems = [
+    { icon: Utensils, label: 'Diet', path: '/diet/new-plan', activeColor: 'text-green-600' },
+    { icon: Dumbbell, label: 'Workout', path: '/workouts', activeColor: 'text-orange-600' },
+    { icon: Calculator, label: 'Protein', path: '/protein-calculator', activeColor: 'text-purple-600' },
+    { icon: Users, label: 'Community', path: '/community', activeColor: 'text-pink-600' },
+    { icon: BookOpen, label: 'Blog', path: '/blog', activeColor: 'text-indigo-600' },
   ];
 
+  const isActive = (path: string) => {
+    return location.pathname.startsWith(path);
+  };
+
   return (
-    <nav className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 shadow-md z-[999] md:hidden">
-      <div className="flex justify-center items-center py-2">
-
-        <div className="flex justify-between w-full px-6">
-
-          {items.map((item) => {
-            const Icon = item.icon;
-            const isActive = location.pathname.startsWith(item.path);
-
-            return (
-              <button
-                key={item.label}
-                onClick={() => navigate(item.path)}
-                className="flex flex-col items-center"
-                style={{ width: "65px" }}  // ⬅ BIGGER spacing exactly like your screenshot
-              >
-                <Icon
-                  className={`
-                    w-[12px] h-[12px] mb-[3px]
-                    ${isActive ? "text-orange-500" : "text-gray-500"}
-                  `}
-                />
-                <span
-                  className={`
-                    text-[8px]
-                    ${isActive ? "text-orange-500" : "text-gray-500"}
-                  `}
-                >
-                  {item.label}
-                </span>
-              </button>
-            );
-          })}
-
-        </div>
+    <div className="fixed bottom-0 left-0 right-0 z-50 bg-white border-t border-gray-200 shadow-lg md:hidden">
+      <div className="flex items-center justify-around px-2 py-2">
+        {navItems.map((item) => {
+          const Icon = item.icon;
+          const active = isActive(item.path);
+          
+          return (
+            <button
+              key={item.path}
+              onClick={() => navigate(item.path)}
+              className={`flex flex-col items-center justify-center flex-1 max-w-[80px] px-1 py-1.5 transition-all ${
+                active ? item.activeColor : 'text-gray-500'
+              }`}
+            >
+              <Icon className={`w-6 h-6 mb-0.5 ${active ? 'scale-110' : ''}`} strokeWidth={active ? 2.5 : 2} />
+              <span className={`text-[10px] leading-tight ${active ? 'font-semibold' : 'font-normal'}`}>
+                {item.label}
+              </span>
+            </button>
+          );
+        })}
       </div>
-    </nav>
+    </div>
   );
 }
