@@ -17,7 +17,7 @@ export default function MobileBottomNav() {
 
   return (
     <nav className="fixed bottom-0 left-0 right-0 bg-white border-t shadow-md z-[999] md:hidden">
-      <div className="flex justify-between px-4 py-2">
+      <div className="flex px-3 py-2">
         {items.map((item) => {
           const Icon = item.icon;
           const isActive = location.pathname.startsWith(item.path);
@@ -26,12 +26,14 @@ export default function MobileBottomNav() {
             <button
               key={item.label}
               onClick={() => navigate(item.path)}
-              className={`flex flex-col items-center justify-center gap-[2px] w-14 ${
-                isActive ? 'text-orange-500' : 'text-gray-500'
-              }`}
+              className={`
+                flex flex-1 flex-col items-center justify-center 
+                gap-[2px]
+                ${isActive ? 'text-orange-500' : 'text-gray-500'}
+              `}
             >
               <Icon className="w-[18px] h-[18px]" />
-              <span className="text-[10px]">{item.label}</span>
+              <span className="text-[11px] leading-tight">{item.label}</span>
             </button>
           );
         })}
