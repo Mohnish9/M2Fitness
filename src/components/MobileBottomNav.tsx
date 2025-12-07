@@ -1,6 +1,12 @@
 import { useNavigate, useLocation } from 'react-router-dom';
-import { Utensils, Dumbbell, Users, Calculator, BookOpen } from 'lucide-react';
-
+import {
+  Utensils,
+  Dumbbell,
+  Heart,
+  Calculator,
+  Users,
+  BookOpen,
+} from "lucide-react";
 export default function MobileBottomNav() {
   const navigate = useNavigate();
   const location = useLocation();
@@ -11,6 +17,7 @@ export default function MobileBottomNav() {
     { icon: Calculator, label: 'Protein', path: '/protein-calculator', activeColor: 'text-purple-600' },
     { icon: Users, label: 'Community', path: '/community', activeColor: 'text-pink-600' },
     { icon: BookOpen, label: 'Blog', path: '/blog', activeColor: 'text-indigo-600' },
+     { label: "Anatomy", icon: Heart, path: "/muscle-anatomy" },
   ];
 
   const isActive = (path: string) => {
@@ -19,7 +26,7 @@ export default function MobileBottomNav() {
 
   return (
     <div className="fixed bottom-0 left-0 right-0 z-50 bg-white border-t border-gray-200 shadow-lg md:hidden">
-      <div className="flex items-center justify-around px-2 py-2">
+      <div className="flex items-center justify-around px-1 py-1">
         {navItems.map((item) => {
           const Icon = item.icon;
           const active = isActive(item.path);
