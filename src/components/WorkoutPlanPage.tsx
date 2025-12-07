@@ -1,20 +1,15 @@
 /**
  * WorkoutPlanPage (OpenArea Flow)
  *
- * Version: M2Fitness v16.5
+ * Version: M2Fitness v16.4 (All Exercises → Full Detail Pages + No Coming Soon)
  */
 
-import { useState, useMemo, useEffect } from 'react';
+import { useState, useMemo } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-
-import MobileHeader from './MobileHeader';
-import MobileBottomNav from './MobileBottomNav';
-
 import { Button } from './ui/button';
 import { Card, CardContent } from './ui/card';
 import { Input } from './ui/input';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from './ui/tabs';
-
 import {
   Home,
   Dumbbell,
@@ -31,34 +26,16 @@ import {
   Repeat,
   Target,
 } from 'lucide-react';
-
 import { ImageWithFallback } from './figma/ImageWithFallback';
+import MobileBottomNav from './MobileBottomNav';
 import { workoutDatabase, type Workout } from '../utils/workoutDatabase';
 
 export default function WorkoutPlanPage() {
   const navigate = useNavigate();
-
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
 
-  // Desktop sidebar open/close (desktop only)
-  const [sidebarOpen, setSidebarOpen] = useState(
-    typeof window !== 'undefined' ? window.innerWidth >= 768 : true
-  );
-
-  useEffect(() => {
-    const handleResize = () => {
-      if (window.innerWidth >= 768) {
-        setSidebarOpen(true);
-      } else {
-        setSidebarOpen(false);
-      }
-    };
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
-
-  // ----------------- Exercise Data -----------------
+  // Comprehensive exercise database
   const exercises = [
     // Chest
     { name: 'Bench Press', category: 'Chest', difficulty: 'Intermediate', equipment: 'Barbell' },
@@ -133,7 +110,7 @@ export default function WorkoutPlanPage() {
 
   const categories = ['All', 'Chest', 'Back', 'Legs', 'Shoulders', 'Arms', 'Core', 'Cardio', 'Full Body'];
 
-  // ----------------- Filtering -----------------
+  // Filter exercises based on search and category
   const filteredExercises = useMemo(() => {
     let filtered = exercises;
 
@@ -142,20 +119,20 @@ export default function WorkoutPlanPage() {
     }
 
     if (searchQuery.trim()) {
-      const q = searchQuery.toLowerCase();
+      const query = searchQuery.toLowerCase();
       filtered = filtered.filter(
         (ex) =>
-          ex.name.toLowerCase().includes(q) ||
-          ex.category.toLowerCase().includes(q) ||
-          ex.equipment.toLowerCase().includes(q) ||
-          ex.difficulty.toLowerCase().includes(q)
+          ex.name.toLowerCase().includes(query) ||
+          ex.category.toLowerCase().includes(query) ||
+          ex.equipment.toLowerCase().includes(query) ||
+          ex.difficulty.toLowerCase().includes(query),
       );
     }
 
     return filtered;
   }, [searchQuery, selectedCategory]);
 
-  // ----------------- Workout Plans (tabs) -----------------
+  // Group workouts by level from the database
   const workouts = {
     beginner: workoutDatabase.filter((w) => w.level === 'beginner'),
     intermediate: workoutDatabase.filter((w) => w.level === 'intermediate'),
@@ -234,10 +211,10 @@ export default function WorkoutPlanPage() {
     }
   };
 
-  // --------------- Exercise Slugs + Detail Pages ---------------
+  // Convert exercise name to slug for navigation
   const getExerciseSlug = (exerciseName: string): string => {
     const nameToSlug: { [key: string]: string } = {
-      // Core 7
+      // Core 7 exercises
       'barbell squat': 'barbell-squat',
       'bench press': 'bench-press',
       deadlift: 'deadlift',
@@ -314,8 +291,9 @@ export default function WorkoutPlanPage() {
       'ab wheel rollout': 'ab-wheel-rollout',
       'ab wheel': 'ab-wheel-rollout',
 
-      // Cardio / Full body mapping
+      // Cardio
       burpees: 'burpees',
+      burpee: 'burpees',
       running: 'burpees',
       'jump rope': 'burpees',
       cycling: 'leg-press',
@@ -329,7 +307,7 @@ export default function WorkoutPlanPage() {
       thrusters: 'overhead-press',
       'medicine ball slams': 'overhead-press',
 
-      // Extra
+      // Additional
       'pendlay row': 'pendlay-row',
       'chin-up': 'chin-up',
       'chin up': 'chin-up',
@@ -341,14 +319,75 @@ export default function WorkoutPlanPage() {
       'step ups': 'step-ups',
     };
 
-    const lower = exerciseName.toLowerCase();
-    if (nameToSlug[lower]) return nameToSlug[lower];
+    const lowerName = exerciseName.toLowerCase();
+
+    if (nameToSlug[lowerName]) return nameToSlug[lowerName];
 
     for (const [key, value] of Object.entries(nameToSlug)) {
-      if (lower.includes(key)) return value;
+      if (lowerName.includes(key)) return value;
     }
 
-    return lower.replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+    return exerciseName
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/^-+|-+$/g, '');
+  };
+
+  const hasFullDetailPage = (exerciseName: string): boolean => {
+    const slug = getExerciseSlug(exerciseName);
+    const fullDetailPages = [
+      'barbell-squat',
+      'bench-press',
+      'deadlift',
+      'overhead-press',
+      'barbell-row',
+      'pull-up',
+      'lunge',
+      'push-up',
+      'incline-bench-press',
+      'dumbbell-chest-press',
+      'incline-dumbbell-press',
+      'cable-chest-fly',
+      'cable-flyes',
+      'dumbbell-flyes',
+      'dips',
+      'lat-pulldown',
+      'seated-cable-row',
+      't-bar-row',
+      'single-arm-dumbbell-row',
+      'pendlay-row',
+      'chin-up',
+      'assisted-pull-up',
+      'leg-press',
+      'romanian-deadlift',
+      'leg-curl',
+      'leg-extension',
+      'bulgarian-split-squat',
+      'calf-raises',
+      'reverse-lunge',
+      'step-ups',
+      'lateral-raises',
+      'front-raises',
+      'arnold-press',
+      'face-pulls',
+      'upright-row',
+      'bicep-curls',
+      'hammer-curls',
+      'preacher-curls',
+      'tricep-pushdown',
+      'skull-crushers',
+      'overhead-tricep-extension',
+      'plank',
+      'crunches',
+      'russian-twists',
+      'hanging-leg-raises',
+      'mountain-climbers',
+      'cable-crunches',
+      'ab-wheel-rollout',
+      'burpees',
+      'kettlebell-swings',
+    ];
+    return fullDetailPages.includes(slug);
   };
 
   const handleViewExercise = (exerciseName: string) => {
@@ -356,79 +395,90 @@ export default function WorkoutPlanPage() {
     navigate(`/exercise/${slug}`);
   };
 
-  const handleHeaderSearch = (q: string) => {
-    setSearchQuery(q);
-  };
-
-  // ----------------- RENDER -----------------
   return (
-    <div className="min-h-screen bg-gray-50 pb-20 md:pb-0">
-      {/* Mobile Header with global search hooked into this page */}
-      <MobileHeader showSearch onSearch={handleHeaderSearch} />
-
-      {/* Desktop sidebar (fixed) */}
-      {sidebarOpen && (
-        <aside className="hidden md:block fixed left-0 top-0 h-full w-64 bg-white border-r shadow-lg z-30">
-          <div className="p-6">
-            <div className="flex items-center gap-2 mb-8">
-              <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-orange-500 rounded-lg" />
-              <span className="text-xl" style={{ fontWeight: 700 }}>
-                M2Fitness
-              </span>
-            </div>
-            <nav className="space-y-2">
-              <Link to="/dashboard">
-                <Button variant="ghost" className="w-full justify-start">
-                  <Home className="w-5 h-5 mr-3" />
-                  Home
-                </Button>
-              </Link>
-              <Link to="/workouts">
-                <Button variant="secondary" className="w-full justify-start">
-                  <Dumbbell className="w-5 h-5 mr-3" />
-                  Workouts
-                </Button>
-              </Link>
-              <Link to="/diet/new-plan">
-                <Button variant="ghost" className="w-full justify-start">
-                  <Utensils className="w-5 h-5 mr-3" />
-                  Diet Plans
-                </Button>
-              </Link>
-              <Link to="/progress">
-                <Button variant="ghost" className="w-full justify-start">
-                  <TrendingUp className="w-5 h-5 mr-3" />
-                  Progress
-                </Button>
-              </Link>
-              <Link to="/profile">
-                <Button variant="ghost" className="w-full justify-start">
-                  <User className="w-5 h-5 mr-3" />
-                  Profile
-                </Button>
-              </Link>
-              <Link to="/">
-                <Button className="w-full justify-start text-red-600 hover:text-red-700 hover:bg-red-50" variant="ghost">
-                  <LogOut className="w-5 h-5 mr-3" />
-                  Logout
-                </Button>
-              </Link>
-            </nav>
+    <div className="min-h-screen bg-gray-50">
+      {/* Desktop Sidebar */}
+      <aside className="hidden md:block fixed left-0 top-0 h-full w-64 bg-white border-r shadow-lg z-40">
+        <div className="p-6">
+          <div className="flex items-center gap-2 mb-8">
+            <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-orange-500 rounded-lg" />
+            <span className="text-xl" style={{ fontWeight: 700 }}>
+              M2Fitness
+            </span>
           </div>
-        </aside>
-      )}
-
-      {/* MAIN CONTENT */}
-      <main className="w-full md:ml-64 px-4 md:px-8 pt-4 md:pt-8 max-w-5xl mx-auto">
-        {/* Page heading (visible on mobile & desktop) */}
-        <div className="mb-6 md:mb-8">
-          <h1 className="text-3xl md:text-4xl mb-1" style={{ fontWeight: 700 }}>
-            Workout Plans & Exercises
-          </h1>
-          <p className="text-base md:text-xl text-gray-600">
-            Find the perfect workout or search for specific exercises
-          </p>
+          <nav className="space-y-2">
+            <Link to="/dashboard">
+              <Button variant="ghost" className="w-full justify-start">
+                <Home className="w-5 h-5 mr-3" />
+                Home
+              </Button>
+            </Link>
+            <Link to="/workouts">
+              <Button variant="secondary" className="w-full justify-start">
+                <Dumbbell className="w-5 h-5 mr-3" />
+                Workouts
+              </Button>
+            </Link>
+            <Link to="/diet/new-plan">
+              <Button variant="ghost" className="w-full justify-start">
+                <Utensils className="w-5 h-5 mr-3" />
+                Diet Plans
+              </Button>
+            </Link>
+            <Link to="/progress">
+              <Button variant="ghost" className="w-full justify-start">
+                <TrendingUp className="w-5 h-5 mr-3" />
+                Progress
+              </Button>
+            </Link>
+            <Link to="/profile">
+              <Button variant="ghost" className="w-full justify-start">
+                <User className="w-5 h-5 mr-3" />
+                Profile
+              </Button>
+            </Link>
+            <Link to="/">
+              <Button className="w-full justify-start text-red-600 hover:text-red-700 hover:bg-red-50" variant="ghost">
+                <LogOut className="w-5 h-5 mr-3" />
+                Logout
+              </Button>
+            </Link>
+          </nav>
         </div>
+      </aside>
+
+      {/* Main Content */}
+      <div className="p-4 md:p-8 md:ml-64 pb-20">
+        {/* Header (desktop only) */}
+        <div className="mb-8 hidden md:block">
+          <div className="flex items-center gap-4 mb-4">
+            <div className="flex-1">
+              <h1 className="text-4xl mb-1" style={{ fontWeight: 700 }}>
+                Workout Plans & Exercises
+              </h1>
+              <p className="text-xl text-gray-600">
+                Find the perfect workout or search for specific exercises
+              </p>
+            </div>
+            <Link to="/">
+              <Button
+                variant="outline"
+                className="hidden md:flex items-center gap-2 border-2 hover:bg-gradient-to-r hover:from-blue-50 hover:to-orange-50 hover:border-blue-400 transition-all"
+              >
+                <Home className="w-5 h-5" />
+                <span style={{ fontWeight: 600 }}>Home</span>
+              </Button>
+            </Link>
+          </div>
+        </div>
+
+        {/* Mobile Back to Home */}
+        <Link to="/" className="md:hidden block mb-4">
+          <Button className="w-full flex items-center justify-center gap-2 border-2" variant="outline">
+            <Home className="w-5 h-5" />
+            <span style={{ fontWeight: 600 }}>Back to Home</span>
+          </Button>
+        </Link>
 
         {/* Enhanced Search Section */}
         <Card className="mb-8 bg-gradient-to-br from-blue-50 to-orange-50 border-2">
@@ -453,34 +503,33 @@ export default function WorkoutPlanPage() {
                 )}
               </div>
 
-              {/* Category pills */}
+              {/* Category Filter Pills */}
               <div className="flex flex-wrap gap-2">
-                {categories.map((category) => {
-                  const isActive =
-                    (category === 'All' && !selectedCategory) || selectedCategory === category;
-
-                  return (
-                    <button
-                      key={category}
-                      onClick={() => setSelectedCategory(category === 'All' ? null : category)}
-                      className={`px-4 py-2 rounded-full text-sm transition-all ${
-                        isActive
-                          ? 'bg-gradient-to-r from-blue-500 to-blue-600 text-white shadow-lg hover:shadow-xl transform hover:scale-105'
-                          : 'bg-white text-gray-700 hover:bg-gray-100 border hover:border-blue-300'
-                      }`}
-                      style={isActive ? { fontWeight: 600 } : {}}
-                    >
-                      {category}
-                    </button>
-                  );
-                })}
+                {categories.map((category) => (
+                  <button
+                    key={category}
+                    onClick={() => setSelectedCategory(category === 'All' ? null : category)}
+                    className={`px-4 py-2 rounded-full text-sm transition-all ${
+                      (category === 'All' && !selectedCategory) || selectedCategory === category
+                        ? 'bg-gradient-to-r from-blue-500 to-blue-600 text-white shadow-lg hover:shadow-xl transform hover:scale-105'
+                        : 'bg-white text-gray-700 hover:bg-gray-100 border hover:border-blue-300'
+                    }`}
+                    style={
+                      (category === 'All' && !selectedCategory) || selectedCategory === category
+                        ? { fontWeight: 600 }
+                        : {}
+                    }
+                  >
+                    {category}
+                  </button>
+                ))}
               </div>
             </div>
           </CardContent>
         </Card>
 
-        {/* Search Results */}
-        {(searchQuery || selectedCategory) && (
+        {/* Search Results - OpenArea */}
+        {searchQuery || selectedCategory ? (
           <div className="mb-8">
             <div className="flex items-center justify-between mb-4">
               <div>
@@ -515,6 +564,14 @@ export default function WorkoutPlanPage() {
                             >
                               {exercise.name}
                             </h3>
+                            {hasFullDetailPage(exercise.name) && (
+                              <span
+                                className="px-2 py-0.5 bg-green-100 text-green-700 text-xs rounded"
+                                style={{ fontWeight: 600 }}
+                              >
+                                Full Guide
+                              </span>
+                            )}
                           </div>
                           <p className="text-sm text-gray-600">{exercise.category}</p>
                         </div>
@@ -525,7 +582,7 @@ export default function WorkoutPlanPage() {
                       <div className="flex items-center gap-2 mb-3">
                         <span
                           className={`px-2 py-1 rounded-full text-xs border ${getDifficultyColor(
-                            exercise.difficulty
+                            exercise.difficulty,
                           )}`}
                         >
                           {exercise.difficulty}
@@ -568,9 +625,9 @@ export default function WorkoutPlanPage() {
               </Card>
             )}
           </div>
-        )}
+        ) : null}
 
-        {/* Workout Splits Section (only when not searching) */}
+        {/* Workout Splits Section */}
         {!searchQuery && !selectedCategory && (
           <div className="mb-12">
             <div className="mb-8 text-center">
@@ -766,7 +823,9 @@ export default function WorkoutPlanPage() {
                       >
                         Weekly Schedule:
                       </span>
-                      <p className="text-sm text-gray-600 mt-1">Chest Day, Leg Day, Arm Day, etc.</p>
+                      <p className="text-sm text-gray-600 mt-1">
+                        Chest Day, Leg Day, Arm Day, etc.
+                      </p>
                     </div>
                     <div>
                       <span
@@ -810,8 +869,8 @@ export default function WorkoutPlanPage() {
           </div>
         )}
 
-        {/* Workout Plans Tabs */}
-        <div className="pb-4">
+        {/* Workout Plans Section */}
+        <div>
           <h2 className="text-2xl mb-6" style={{ fontWeight: 700 }}>
             {searchQuery || selectedCategory ? 'Featured Workout Plans' : 'Workout Plans'}
           </h2>
@@ -842,9 +901,9 @@ export default function WorkoutPlanPage() {
             </TabsContent>
           </Tabs>
         </div>
-      </main>
+      </div>
 
-      {/* Mobile bottom nav */}
+      {/* Mobile bottom navigation */}
       <MobileBottomNav />
     </div>
   );
