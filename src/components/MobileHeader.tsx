@@ -1,14 +1,14 @@
 // src/components/MobileHeader.tsx
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Search, Menu, User } from 'lucide-react';
+import { Search, Menu, User, Home, Dumbbell, Utensils, TrendingUp, LogOut } from 'lucide-react';
 import { Input } from './ui/input';
-import MobileHamburgerMenu from './MobileHamburgerMenu';
+import { Button } from './ui/button';
 
 interface MobileHeaderProps {
   onSearch?: (query: string) => void;
   showSearch?: boolean;
-  showMenu?: boolean; // allow disabling the hamburger on some screens
+  showMenu?: boolean;
 }
 
 export default function MobileHeader({
@@ -26,12 +26,17 @@ export default function MobileHeader({
     }
   };
 
+  const go = (path: string) => {
+    navigate(path);
+    setIsMenuOpen(false);
+  };
+
   return (
     <>
-      {/* Header itself (mobile only) */}
+      {/* MOBILE HEADER BAR */}
       <div className="md:hidden">
         <div className="sticky top-0 left-0 right-0 z-40 bg-white border-b shadow-sm">
-          {/* Top bar */}
+          {/* Top row */}
           <div className="flex items-center justify-between px-4 py-3">
             {/* Hamburger */}
             {showMenu ? (
@@ -62,7 +67,7 @@ export default function MobileHeader({
             </button>
           </div>
 
-          {/* Search bar (optional) */}
+          {/* Search bar */}
           {showSearch && (
             <div className="px-4 pb-3">
               <div className="relative">
@@ -84,11 +89,82 @@ export default function MobileHeader({
         </div>
       </div>
 
-      {/* Slide-in menu */}
-      <MobileHamburgerMenu
-        isOpen={isMenuOpen}
-        onClose={() => setIsMenuOpen(false)}
-      />
+      {/* SLIDE-IN MENU OVERLAY */}
+      {isMenuOpen && (
+        <div className="fixed inset-0 z-[120] md:hidden">
+          {/* dark background */}
+          <div
+            className="absolute inset-0 bg-black/40"
+            onClick={() => setIsMenuOpen(false)}
+          />
+
+          {/* left panel */}
+          <div className="relative h-full w-72 bg-white shadow-2xl">
+            {/* header inside menu */}
+            <div className="flex items-center gap-2 px-4 py-4 border-b">
+              <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-orange-500 rounded-lg" />
+              <span className="text-lg font-bold">M2Fitnes</span>
+            </div>
+
+            {/* nav items */}
+            <nav className="p-4 space-y-2">
+              <Button
+                variant="ghost"
+                className="w-full justify-start"
+                onClick={() => go('/dashboard')}
+              >
+                <Home className="w-5 h-5 mr-3" />
+                Home
+              </Button>
+
+              <Button
+                variant="ghost"
+                className="w-full justify-start"
+                onClick={() => go('/workouts')}
+              >
+                <Dumbbell className="w-5 h-5 mr-3" />
+                Workouts
+              </Button>
+
+              <Button
+                variant="ghost"
+                className="w-full justify-start"
+                onClick={() => go('/diet/new-plan')}
+              >
+                <Utensils className="w-5 h-5 mr-3" />
+                Diet Plans
+              </Button>
+
+              <Button
+                variant="ghost"
+                className="w-full justify-start"
+                onClick={() => go('/progress')}
+              >
+                <TrendingUp className="w-5 h-5 mr-3" />
+                Progress
+              </Button>
+
+              <Button
+                variant="ghost"
+                className="w-full justify-start"
+                onClick={() => go('/profile')}
+              >
+                <User className="w-5 h-5 mr-3" />
+                Profile
+              </Button>
+
+              <Button
+                variant="ghost"
+                className="w-full justify-start text-red-600 hover:text-red-700 hover:bg-red-50"
+                onClick={() => go('/')}
+              >
+                <LogOut className="w-5 h-5 mr-3" />
+                Logout
+              </Button>
+            </nav>
+          </div>
+        </div>
+      )}
     </>
   );
 }
