@@ -22,46 +22,41 @@ export default function MobileBottomNav() {
   ];
 
   return (
-    <nav className="
-      fixed bottom-0 left-0 right-0 bg-white 
-      border-t border-gray-200 shadow-md 
-      z-[999] md:hidden
-    ">
-      <div className="
-        flex justify-between 
-        px-4 py-2
-      ">
-        {items.map((item) => {
-          const Icon = item.icon;
-          const isActive = location.pathname.startsWith(item.path);
+    <nav className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 shadow-md z-[999] md:hidden">
+      <div className="flex justify-center items-center py-2">
 
-          return (
-            <button
-              key={item.label}
-              onClick={() => navigate(item.path)}
-              className="
-                flex flex-col items-center 
-                w-[60px]            /* ⬅ gives spacing */
-              "
-            >
-              <Icon
-                className={`
-                  w-[12px] h-[12px] mb-[3px]
-                  ${isActive ? "text-orange-500" : "text-gray-500"}
-                `}
-              />
+        <div className="flex justify-between w-full px-6">
 
-              <span
-                className={`
-                  text-[8px] 
-                  ${isActive ? "text-orange-500" : "text-gray-500"}
-                `}
+          {items.map((item) => {
+            const Icon = item.icon;
+            const isActive = location.pathname.startsWith(item.path);
+
+            return (
+              <button
+                key={item.label}
+                onClick={() => navigate(item.path)}
+                className="flex flex-col items-center"
+                style={{ width: "65px" }}  // ⬅ BIGGER spacing exactly like your screenshot
               >
-                {item.label}
-              </span>
-            </button>
-          );
-        })}
+                <Icon
+                  className={`
+                    w-[12px] h-[12px] mb-[3px]
+                    ${isActive ? "text-orange-500" : "text-gray-500"}
+                  `}
+                />
+                <span
+                  className={`
+                    text-[8px]
+                    ${isActive ? "text-orange-500" : "text-gray-500"}
+                  `}
+                >
+                  {item.label}
+                </span>
+              </button>
+            );
+          })}
+
+        </div>
       </div>
     </nav>
   );
