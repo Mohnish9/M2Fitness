@@ -1,4 +1,4 @@
-// 👇 FULL FINAL VERSION
+// src/components/MobileHeader.tsx
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Search, Menu, User } from 'lucide-react';
@@ -8,7 +8,7 @@ import MobileHamburgerMenu from './MobileHamburgerMenu';
 interface MobileHeaderProps {
   onSearch?: (query: string) => void;
   showSearch?: boolean;
-  showMenu?: boolean;
+  showMenu?: boolean; // allow disabling the hamburger on some screens
 }
 
 export default function MobileHeader({
@@ -22,18 +22,19 @@ export default function MobileHeader({
 
   const handleSearch = () => {
     if (searchQuery.trim() && onSearch) {
-      onSearch(searchQuery);
+      onSearch(searchQuery.trim());
     }
   };
 
   return (
     <>
+      {/* Header itself (mobile only) */}
       <div className="md:hidden">
-        {/* Mobile Header */}
         <div className="sticky top-0 left-0 right-0 z-40 bg-white border-b shadow-sm">
+          {/* Top bar */}
           <div className="flex items-center justify-between px-4 py-3">
-            {/* Left: Hamburger Menu */}
-            {showMenu && (
+            {/* Hamburger */}
+            {showMenu ? (
               <button
                 onClick={() => setIsMenuOpen(true)}
                 className="p-2 hover:bg-gray-100 rounded-lg transition-colors -ml-2"
@@ -41,17 +42,17 @@ export default function MobileHeader({
               >
                 <Menu className="w-6 h-6 text-gray-700" />
               </button>
+            ) : (
+              <div className="w-6 h-6 -ml-2" />
             )}
 
-            {/* Center: Logo */}
-            <div className="flex items-center gap-2 absolute left-1/2 transform -translate-x-1/2">
-              <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-orange-500 rounded-lg"></div>
-              <span className="text-xl" style={{ fontWeight: 700 }}>
-                M2Fitnes
-              </span>
+            {/* Logo */}
+            <div className="flex items-center gap-2 absolute left-1/2 -translate-x-1/2">
+              <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-orange-500 rounded-lg" />
+              <span className="text-xl font-bold">M2Fitnes</span>
             </div>
 
-            {/* Right: Login/Profile */}
+            {/* Profile/Login */}
             <button
               onClick={() => navigate('/login')}
               className="p-2 hover:bg-gray-100 rounded-lg transition-colors -mr-2"
@@ -61,11 +62,11 @@ export default function MobileHeader({
             </button>
           </div>
 
-          {/* Search Bar */}
+          {/* Search bar (optional) */}
           {showSearch && (
             <div className="px-4 pb-3">
               <div className="relative">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
                 <Input
                   placeholder="Search workouts, diets, blogs..."
                   className="pl-10 pr-4 h-11 text-sm bg-gray-50 border border-gray-300 focus:border-blue-400 rounded-lg w-full"
@@ -83,13 +84,11 @@ export default function MobileHeader({
         </div>
       </div>
 
-      {/* 🔥 IMPORTANT: this is what actually shows the slide-out menu */}
-      {showMenu && (
-        <MobileHamburgerMenu
-          isOpen={isMenuOpen}
-          onClose={() => setIsMenuOpen(false)}
-        />
-      )}
+      {/* Slide-in menu */}
+      <MobileHamburgerMenu
+        isOpen={isMenuOpen}
+        onClose={() => setIsMenuOpen(false)}
+      />
     </>
   );
 }
