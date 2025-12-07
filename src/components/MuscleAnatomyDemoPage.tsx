@@ -3,6 +3,9 @@ import { useNavigate } from 'react-router-dom';
 import { Button } from './ui/button';
 import { ArrowLeft, Dumbbell, Activity } from 'lucide-react';
 import MuscleAnatomyViewer from './MuscleAnatomyViewer';
+import MobileHamburgerMenu from './MobileHamburgerMenu';
+import MobileHeader from './MobileHeader';
+import MobileBottomNav from './MobileBottomNav';
 
 export default function MuscleAnatomyDemoPage() {
   const navigate = useNavigate();
