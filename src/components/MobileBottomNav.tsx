@@ -1,3 +1,4 @@
+
 import { useNavigate, useLocation } from "react-router-dom";
 import {
   Utensils,
@@ -23,7 +24,7 @@ export default function MobileBottomNav() {
 
   return (
     <nav className="fixed bottom-0 left-0 right-0 bg-white border-t shadow-xl z-[999] md:hidden">
-      <div className="flex justify-center items-center px-2 py-2 space-x-4">
+      <div className="flex justify-center items-center px-1 py-2 space-x-4">
 
         {items.map((item) => {
           const Icon = item.icon;
@@ -40,10 +41,10 @@ export default function MobileBottomNav() {
               `}
             >
               {/* EXTRA SMALL ICON */}
-              <Icon className="w-[10px] h-[10px] mb-[2px]" />
+              <Icon className="w-[5px] h-[5px] mb-[1px]" />
 
               {/* EXTRA SMALL TEXT */}
-              <span className="text-[7px] leading-none">
+              <span className="text-[6px] leading-none">
                 {item.label}
               </span>
             </button>
