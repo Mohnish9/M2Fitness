@@ -1,13 +1,24 @@
-// src/components/MobileHeader.tsx
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Search, Menu, User, Home, Dumbbell, Utensils, TrendingUp, LogOut } from 'lucide-react';
+import {
+  Search,
+  Menu,
+  User,
+  Home,
+  Dumbbell,
+  Utensils,
+  TrendingUp,
+  Users,
+  BookOpen,
+  LogOut,
+} from 'lucide-react';
 import { Input } from './ui/input';
 import { Button } from './ui/button';
 
 interface MobileHeaderProps {
   onSearch?: (query: string) => void;
   showSearch?: boolean;
+  /** set false on pages where you DON'T want the hamburger */
   showMenu?: boolean;
 }
 
@@ -21,24 +32,19 @@ export default function MobileHeader({
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const handleSearch = () => {
-    if (searchQuery.trim() && onSearch) {
-      onSearch(searchQuery.trim());
-    }
-  };
-
-  const go = (path: string) => {
-    navigate(path);
-    setIsMenuOpen(false);
+    if (!onSearch) return;
+    const trimmed = searchQuery.trim();
+    if (trimmed) onSearch(trimmed);
   };
 
   return (
     <>
-      {/* MOBILE HEADER BAR */}
+      {/* Mobile only wrapper */}
       <div className="md:hidden">
+        {/* Top bar */}
         <div className="sticky top-0 left-0 right-0 z-40 bg-white border-b shadow-sm">
-          {/* Top row */}
           <div className="flex items-center justify-between px-4 py-3">
-            {/* Hamburger */}
+            {/* Left: Hamburger or spacer */}
             {showMenu ? (
               <button
                 onClick={() => setIsMenuOpen(true)}
@@ -48,16 +54,16 @@ export default function MobileHeader({
                 <Menu className="w-6 h-6 text-gray-700" />
               </button>
             ) : (
-              <div className="w-6 h-6 -ml-2" />
+              <div className="w-10" />
             )}
 
-            {/* Logo */}
+            {/* Center: Logo */}
             <div className="flex items-center gap-2 absolute left-1/2 -translate-x-1/2">
               <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-orange-500 rounded-lg" />
               <span className="text-xl font-bold">M2Fitnes</span>
             </div>
 
-            {/* Profile/Login */}
+            {/* Right: login/profile */}
             <button
               onClick={() => navigate('/login')}
               className="p-2 hover:bg-gray-100 rounded-lg transition-colors -mr-2"
@@ -67,7 +73,7 @@ export default function MobileHeader({
             </button>
           </div>
 
-          {/* Search bar */}
+          {/* Search bar (optional) */}
           {showSearch && (
             <div className="px-4 pb-3">
               <div className="relative">
@@ -78,7 +84,7 @@ export default function MobileHeader({
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   onKeyDown={(e) => {
-                    if (e.key === 'Enter' && searchQuery.trim()) {
+                    if (e.key === 'Enter') {
                       handleSearch();
                     }
                   }}
@@ -89,29 +95,30 @@ export default function MobileHeader({
         </div>
       </div>
 
-      {/* SLIDE-IN MENU OVERLAY */}
-      {isMenuOpen && (
+      {/* Slide-in mobile menu */}
+      {showMenu && isMenuOpen && (
         <div className="fixed inset-0 z-[120] md:hidden">
-          {/* dark background */}
+          {/* Dark backdrop */}
           <div
             className="absolute inset-0 bg-black/40"
             onClick={() => setIsMenuOpen(false)}
           />
 
-          {/* left panel */}
-          <div className="relative h-full w-72 bg-white shadow-2xl">
-            {/* header inside menu */}
-            <div className="flex items-center gap-2 px-4 py-4 border-b">
+          {/* White panel */}
+          <div className="relative h-full w-72 max-w-[80%] bg-white shadow-2xl flex flex-col">
+            <div className="p-5 border-b flex items-center gap-2">
               <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-orange-500 rounded-lg" />
-              <span className="text-lg font-bold">M2Fitnes</span>
+              <span className="text-xl font-bold">M2Fitness</span>
             </div>
 
-            {/* nav items */}
-            <nav className="p-4 space-y-2">
+            <nav className="flex-1 p-4 space-y-2">
               <Button
                 variant="ghost"
                 className="w-full justify-start"
-                onClick={() => go('/dashboard')}
+                onClick={() => {
+                  navigate('/dashboard');
+                  setIsMenuOpen(false);
+                }}
               >
                 <Home className="w-5 h-5 mr-3" />
                 Home
@@ -120,7 +127,10 @@ export default function MobileHeader({
               <Button
                 variant="ghost"
                 className="w-full justify-start"
-                onClick={() => go('/workouts')}
+                onClick={() => {
+                  navigate('/workouts');
+                  setIsMenuOpen(false);
+                }}
               >
                 <Dumbbell className="w-5 h-5 mr-3" />
                 Workouts
@@ -129,7 +139,10 @@ export default function MobileHeader({
               <Button
                 variant="ghost"
                 className="w-full justify-start"
-                onClick={() => go('/diet/new-plan')}
+                onClick={() => {
+                  navigate('/diet/new-plan');
+                  setIsMenuOpen(false);
+                }}
               >
                 <Utensils className="w-5 h-5 mr-3" />
                 Diet Plans
@@ -138,7 +151,10 @@ export default function MobileHeader({
               <Button
                 variant="ghost"
                 className="w-full justify-start"
-                onClick={() => go('/progress')}
+                onClick={() => {
+                  navigate('/progress');
+                  setIsMenuOpen(false);
+                }}
               >
                 <TrendingUp className="w-5 h-5 mr-3" />
                 Progress
@@ -147,21 +163,52 @@ export default function MobileHeader({
               <Button
                 variant="ghost"
                 className="w-full justify-start"
-                onClick={() => go('/profile')}
+                onClick={() => {
+                  navigate('/community');
+                  setIsMenuOpen(false);
+                }}
               >
-                <User className="w-5 h-5 mr-3" />
-                Profile
+                <Users className="w-5 h-5 mr-3" />
+                Community
               </Button>
 
               <Button
                 variant="ghost"
+                className="w-full justify-start"
+                onClick={() => {
+                  navigate('/blog');
+                  setIsMenuOpen(false);
+                }}
+              >
+                <BookOpen className="w-5 h-5 mr-3" />
+                Blog
+              </Button>
+            </nav>
+
+            <div className="p-4 border-t space-y-2">
+              <Button
+                variant="ghost"
+                className="w-full justify-start"
+                onClick={() => {
+                  navigate('/profile');
+                  setIsMenuOpen(false);
+                }}
+              >
+                <User className="w-5 h-5 mr-3" />
+                Profile
+              </Button>
+              <Button
+                variant="ghost"
                 className="w-full justify-start text-red-600 hover:text-red-700 hover:bg-red-50"
-                onClick={() => go('/')}
+                onClick={() => {
+                  navigate('/');
+                  setIsMenuOpen(false);
+                }}
               >
                 <LogOut className="w-5 h-5 mr-3" />
                 Logout
               </Button>
-            </nav>
+            </div>
           </div>
         </div>
       )}
