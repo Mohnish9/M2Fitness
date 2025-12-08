@@ -4,9 +4,19 @@ import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
 import { Input } from './ui/input';
 import { Label } from './ui/label';
 import { Avatar, AvatarFallback } from './ui/avatar';
-import { Home, Dumbbell, TrendingUp, User, LogOut, Utensils, Camera } from 'lucide-react';
+import {
+  Home,
+  Dumbbell,
+  TrendingUp,
+  User,
+  LogOut,
+  Utensils,
+  Camera,
+} from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { useAuth, API_BASE } from '../utils/authContext';
+import MobileHeader from './MobileHeader';
+import MobileBottomNav from './MobileBottomNav';
 
 export default function ProfilePage() {
   const { user, setUser, logout } = useAuth();
@@ -62,11 +72,8 @@ export default function ProfilePage() {
       }
 
       const updatedUser = await res.json();
-
-      // Update auth context + localStorage so data persists after refresh
       setUser(updatedUser);
       localStorage.setItem('m2fitness_user', JSON.stringify(updatedUser));
-
       setIsEditing(false);
     } catch (err) {
       console.error('Error updating profile:', err);
@@ -75,25 +82,29 @@ export default function ProfilePage() {
     }
   };
 
-  const initials =
-    profile.name
-      ? profile.name
-          .split(' ')
-          .map((n) => n[0])
-          .join('')
-          .toUpperCase()
-      : 'U';
+  const initials = profile.name
+    ? profile.name
+        .split(' ')
+        .map((n) => n[0])
+        .join('')
+        .toUpperCase()
+    : 'U';
 
   const memberSince = 'January 2025';
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Sidebar */}
-      <aside className="fixed left-0 top-0 h-full w-64 bg-white border-r shadow-sm z-50">
+      {/* 🔹 Mobile Header */}
+      <div className="md:hidden sticky top-0 z-40">
+        <MobileHeader showSearch={false} />
+      </div>
+
+      {/* 🔹 Desktop Sidebar */}
+      <aside className="hidden md:block fixed left-0 top-0 h-full w-64 bg-white border-r shadow-sm z-30">
         <div className="p-6">
           <div className="flex items-center gap-2 mb-8">
-            <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-orange-500 rounded-lg"></div>
-            <span className="text-xl" style={{ fontWeight: 700 }}>M2Fitnes</span>
+            <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-orange-500 rounded-lg" />
+            <span className="text-xl font-bold">M2Fitnes</span>
           </div>
           <nav className="space-y-2">
             <Link to="/dashboard">
@@ -142,45 +153,57 @@ export default function ProfilePage() {
         </div>
       </aside>
 
-      {/* Main Content */}
-      <div className="ml-64 p-8">
+      {/* 🔹 Main Content */}
+      <div className="pt-4 pb-20 px-4 sm:px-6 lg:px-8 md:ml-64">
         <div className="max-w-4xl mx-auto">
-          <div className="mb-8">
-            <h1 className="text-4xl mb-2" style={{ fontWeight: 700 }}>Profile Settings</h1>
-            <p className="text-xl text-gray-600">Manage your account information</p>
+          {/* Page header */}
+          <div className="mb-6 sm:mb-8 mt-2 md:mt-8">
+            <h1 className="text-2xl sm:text-3xl md:text-4xl mb-1 sm:mb-2 font-bold">
+              Profile Settings
+            </h1>
+            <p className="text-sm sm:text-base md:text-xl text-gray-600">
+              Manage your account information
+            </p>
           </div>
 
-          <div className="grid lg:grid-cols-3 gap-6">
+          {/* Profile + Form */}
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             {/* Profile Card */}
             <Card className="lg:col-span-1">
               <CardContent className="p-6 text-center">
                 <div className="relative inline-block mb-4">
-                  <Avatar className="w-32 h-32">
-                    <AvatarFallback className="bg-gradient-to-br from-blue-500 to-orange-500 text-white text-4xl">
+                  <Avatar className="w-24 h-24 sm:w-28 sm:h-28 md:w-32 md:h-32">
+                    <AvatarFallback className="bg-gradient-to-br from-blue-500 to-orange-500 text-white text-3xl sm:text-4xl">
                       {initials}
                     </AvatarFallback>
                   </Avatar>
                   <Button
                     size="sm"
-                    className="absolute bottom-0 right-0 rounded-full w-10 h-10 p-0 bg-blue-500 hover:bg-blue-600"
+                    className="absolute bottom-0 right-0 rounded-full w-9 h-9 sm:w-10 sm:h-10 p-0 bg-blue-500 hover:bg-blue-600"
                   >
-                    <Camera className="w-5 h-5" />
+                    <Camera className="w-4 h-4 sm:w-5 sm:h-5" />
                   </Button>
                 </div>
-                <h2 className="text-2xl mb-1" style={{ fontWeight: 700 }}>
+                <h2 className="text-xl sm:text-2xl mb-1 font-bold">
                   {profile.name || 'Your Name'}
                 </h2>
-                <p className="text-gray-600 mb-6">
+                <p className="text-xs sm:text-sm text-gray-600 mb-6">
                   {profile.email || 'your@email.com'}
                 </p>
                 <div className="space-y-2">
                   <div className="p-3 bg-blue-50 rounded-lg">
-                    <p className="text-sm text-gray-600">Goal</p>
-                    <p style={{ fontWeight: 600 }}>{profile.goal}</p>
+                    <p className="text-xs sm:text-sm text-gray-600">Goal</p>
+                    <p className="text-sm sm:text-base font-semibold">
+                      {profile.goal}
+                    </p>
                   </div>
                   <div className="p-3 bg-orange-50 rounded-lg">
-                    <p className="text-sm text-gray-600">Member Since</p>
-                    <p style={{ fontWeight: 600 }}>{memberSince}</p>
+                    <p className="text-xs sm:text-sm text-gray-600">
+                      Member Since
+                    </p>
+                    <p className="text-sm sm:text-base font-semibold">
+                      {memberSince}
+                    </p>
                   </div>
                 </div>
               </CardContent>
@@ -189,20 +212,31 @@ export default function ProfilePage() {
             {/* Details Form */}
             <Card className="lg:col-span-2">
               <CardHeader>
-                <div className="flex items-center justify-between">
-                  <CardTitle>Personal Information</CardTitle>
+                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+                  <CardTitle className="text-lg sm:text-xl">
+                    Personal Information
+                  </CardTitle>
                   {!isEditing ? (
-                    <Button onClick={() => setIsEditing(true)} variant="outline">
+                    <Button
+                      onClick={() => setIsEditing(true)}
+                      variant="outline"
+                      size="sm"
+                    >
                       Edit Profile
                     </Button>
                   ) : (
                     <div className="flex gap-2">
-                      <Button onClick={() => setIsEditing(false)} variant="outline">
+                      <Button
+                        onClick={() => setIsEditing(false)}
+                        variant="outline"
+                        size="sm"
+                      >
                         Cancel
                       </Button>
                       <Button
                         onClick={handleSave}
                         disabled={saving}
+                        size="sm"
                         className="bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700"
                       >
                         {saving ? 'Saving...' : 'Save Changes'}
@@ -212,13 +246,15 @@ export default function ProfilePage() {
                 </div>
               </CardHeader>
               <CardContent className="space-y-6">
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div className="space-y-2">
                     <Label htmlFor="name">Full Name</Label>
                     <Input
                       id="name"
                       value={profile.name}
-                      onChange={(e) => setProfile({ ...profile, name: e.target.value })}
+                      onChange={(e) =>
+                        setProfile({ ...profile, name: e.target.value })
+                      }
                       disabled={!isEditing}
                     />
                   </div>
@@ -228,19 +264,23 @@ export default function ProfilePage() {
                       id="email"
                       type="email"
                       value={profile.email}
-                      onChange={(e) => setProfile({ ...profile, email: e.target.value })}
+                      onChange={(e) =>
+                        setProfile({ ...profile, email: e.target.value })
+                      }
                       disabled={!isEditing}
                     />
                   </div>
                 </div>
 
-                <div className="grid grid-cols-3 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                   <div className="space-y-2">
                     <Label htmlFor="age">Age</Label>
                     <Input
                       id="age"
                       value={profile.age}
-                      onChange={(e) => setProfile({ ...profile, age: e.target.value })}
+                      onChange={(e) =>
+                        setProfile({ ...profile, age: e.target.value })
+                      }
                       disabled={!isEditing}
                     />
                   </div>
@@ -249,7 +289,9 @@ export default function ProfilePage() {
                     <Input
                       id="weight"
                       value={profile.weight}
-                      onChange={(e) => setProfile({ ...profile, weight: e.target.value })}
+                      onChange={(e) =>
+                        setProfile({ ...profile, weight: e.target.value })
+                      }
                       disabled={!isEditing}
                     />
                   </div>
@@ -258,7 +300,9 @@ export default function ProfilePage() {
                     <Input
                       id="height"
                       value={profile.height}
-                      onChange={(e) => setProfile({ ...profile, height: e.target.value })}
+                      onChange={(e) =>
+                        setProfile({ ...profile, height: e.target.value })
+                      }
                       disabled={!isEditing}
                     />
                   </div>
@@ -269,7 +313,9 @@ export default function ProfilePage() {
                   <Input
                     id="goal"
                     value={profile.goal}
-                    onChange={(e) => setProfile({ ...profile, goal: e.target.value })}
+                    onChange={(e) =>
+                      setProfile({ ...profile, goal: e.target.value })
+                    }
                     disabled={!isEditing}
                   />
                 </div>
@@ -278,19 +324,21 @@ export default function ProfilePage() {
           </div>
 
           {/* Additional Settings */}
-          <div className="grid md:grid-cols-2 gap-6 mt-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6 mb-4">
             <Card>
               <CardHeader>
-                <CardTitle>Account Actions</CardTitle>
+                <CardTitle className="text-lg sm:text-xl">
+                  Account Actions
+                </CardTitle>
               </CardHeader>
               <CardContent className="space-y-3">
-                <Button variant="outline" className="w-full justify-start">
+                <Button variant="outline" className="w-full justify-start text-sm">
                   Change Password
                 </Button>
-                <Button variant="outline" className="w-full justify-start">
+                <Button variant="outline" className="w-full justify-start text-sm">
                   Notification Settings
                 </Button>
-                <Button variant="outline" className="w-full justify-start">
+                <Button variant="outline" className="w-full justify-start text-sm">
                   Privacy Settings
                 </Button>
               </CardContent>
@@ -298,30 +346,35 @@ export default function ProfilePage() {
 
             <Card>
               <CardHeader>
-                <CardTitle>Activity Summary</CardTitle>
+                <CardTitle className="text-lg sm:text-xl">
+                  Activity Summary
+                </CardTitle>
               </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="flex justify-between items-center">
+              <CardContent className="space-y-3 sm:space-y-4">
+                <div className="flex justify-between items-center text-sm sm:text-base">
                   <span className="text-gray-600">Total Workouts</span>
-                  <span style={{ fontWeight: 700 }}>12</span>
+                  <span className="font-bold">12</span>
                 </div>
-                <div className="flex justify-between items-center">
+                <div className="flex justify-between items-center text-sm sm:text-base">
                   <span className="text-gray-600">Current Streak</span>
-                  <span style={{ fontWeight: 700 }}>3 days</span>
+                  <span className="font-bold">3 days</span>
                 </div>
-                <div className="flex justify-between items-center">
+                <div className="flex justify-between items-center text-sm sm:text-base">
                   <span className="text-gray-600">Calories Burned</span>
-                  <span style={{ fontWeight: 700 }}>1,240</span>
+                  <span className="font-bold">1,240</span>
                 </div>
-                <div className="flex justify-between items-center">
+                <div className="flex justify-between items-center text-sm sm:text-base">
                   <span className="text-gray-600">Badges Earned</span>
-                  <span style={{ fontWeight: 700 }}>3</span>
+                  <span className="font-bold">3</span>
                 </div>
               </CardContent>
             </Card>
           </div>
         </div>
       </div>
+
+      {/* 🔹 Mobile Bottom Navigation */}
+      <MobileBottomNav />
     </div>
   );
 }
