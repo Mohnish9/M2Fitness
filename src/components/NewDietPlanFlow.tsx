@@ -706,8 +706,7 @@ export default function NewDietPlanFlow() {
               onClick={handlePrevStep}
               variant="outline"
               size="lg"
-              className="flex-1"
-              disabled={isGenerating}
+ className="flex-1 h-14 text-base sm:h-auto sm:text-sm"              disabled={isGenerating}
             >
               <ArrowLeft className="w-5 h-5 mr-2" />
               Previous
@@ -715,8 +714,7 @@ export default function NewDietPlanFlow() {
             <Button
               onClick={handleNextStep}
               size="lg"
-              className="flex-1 bg-gradient-to-r from-green-500 to-blue-600 hover:from-green-600 hover:to-blue-700"
-            >
+className="flex-1 h-14 text-base sm:h-auto sm:text-sm bg-gradient-to-r from-green-500 to-blue-600"            >
               Next Step
               <ArrowRight className="w-5 h-5 ml-2" />
             </Button>
