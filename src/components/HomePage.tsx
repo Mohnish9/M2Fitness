@@ -98,7 +98,7 @@ export default function HomePage() {
                 </button>
               </div>
 
-              <div className="flex gap-4">
+<div className="flex flex-col sm:flex-row gap-4">
                 <Link to="/signup">
                   <Button size="lg" className="bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700">
                     Get Started

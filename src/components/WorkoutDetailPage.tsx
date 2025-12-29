@@ -6,7 +6,7 @@ import { Home, Dumbbell, TrendingUp, User, LogOut, Utensils, ArrowLeft, Clock, H
 import { ImageWithFallback } from './figma/ImageWithFallback';
 import { useState, useEffect } from 'react';
 import { getWorkoutBySlug, getWorkoutsByLevel, type Workout, type Exercise } from '../utils/workoutDatabase';
-import { toast } from 'sonner@2.0.3';
+import { toast } from 'sonner';
 import { useAuth } from '../utils/authContext';
 import { GatedAction } from './GatedAction';
 

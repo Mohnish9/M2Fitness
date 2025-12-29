@@ -5,7 +5,7 @@ import { Card, CardContent } from './ui/card';
 import { Progress } from './ui/progress';
 import { Home, User, ArrowLeft, Dumbbell, TrendingUp, Clock, Target, Flame, Calendar, Download, Zap, Award, Activity } from 'lucide-react';
 import { getWorkoutsForGoal, type Workout } from '../utils/workoutDatabase';
-import { toast } from 'sonner@2.0.3';
+import { toast } from 'sonner';
 
 export default function PersonalizedWorkoutPlanPage() {
   const navigate = useNavigate();

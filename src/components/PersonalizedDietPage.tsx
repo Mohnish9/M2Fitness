@@ -5,7 +5,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from './ui/tabs';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from './ui/dialog';
 import { Home, Dumbbell, TrendingUp, User, LogOut, Utensils, Download, RefreshCw, MapPin, Save, CheckCircle, Lock, Eye, X } from 'lucide-react';
 import { ImageWithFallback } from './figma/ImageWithFallback';
-import { toast } from 'sonner@2.0.3';
+import { toast } from 'sonner';
 import { useState } from 'react';
 import { getRegionalMeals } from '../utils/regionalMealData';
 import { useAuth } from '../utils/authContext';

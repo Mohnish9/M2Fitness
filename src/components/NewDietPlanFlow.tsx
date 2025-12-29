@@ -171,7 +171,7 @@ export default function NewDietPlanFlow() {
               <div className="w-16 h-16 bg-gradient-to-br from-green-400 to-green-600 rounded-full mx-auto mb-4 flex items-center justify-center">
                 <User className="w-8 h-8 text-white" />
               </div>
-              <h2 className="text-3xl mb-2" style={{ fontWeight: 700 }}>
+<h2 className="text-2xl sm:text-3xl mb-2" style={{ fontWeight: 700 }}>
                 {isLogin ? 'Welcome Back!' : 'Create Your Account'}
               </h2>
               <p className="text-gray-600">
@@ -246,7 +246,7 @@ export default function NewDietPlanFlow() {
               <div className="w-16 h-16 bg-gradient-to-br from-blue-400 to-blue-600 rounded-full mx-auto mb-4 flex items-center justify-center">
                 <User className="w-8 h-8 text-white" />
               </div>
-              <h2 className="text-3xl mb-2" style={{ fontWeight: 700 }}>
+<h2 className="text-2xl sm:text-3xl mb-2" style={{ fontWeight: 700 }}>
                 Tell Us About Yourself
               </h2>
               <p className="text-gray-600">
@@ -338,9 +338,10 @@ export default function NewDietPlanFlow() {
               <div className="w-16 h-16 bg-gradient-to-br from-purple-400 to-purple-600 rounded-full mx-auto mb-4 flex items-center justify-center">
                 <Target className="w-8 h-8 text-white" />
               </div>
-              <h2 className="text-3xl mb-2" style={{ fontWeight: 700 }}>
-                Location & Fitness Goal
-              </h2>
+              <h2 className="text-2xl sm:text-3xl mb-2" style={{ fontWeight: 700 }}>
+  Location & Fitness Goal
+</h2>
+
               <p className="text-gray-600">
                 We'll match your diet to regional cuisine and goals
               </p>
@@ -421,7 +422,7 @@ export default function NewDietPlanFlow() {
                     }`}
                     onClick={() => updateFormData('goal', goal.value)}
                   >
-                    <CardContent className="p-6 text-center">
+<CardContent className="p-4 sm:p-6 text-center">
                       <div className="text-4xl mb-2">{goal.icon}</div>
                       <p style={{ fontWeight: 600 }}>{goal.label}</p>
                     </CardContent>
@@ -462,7 +463,7 @@ export default function NewDietPlanFlow() {
                 }`}
                 onClick={() => updateFormData('dietType', 'vegetarian')}
               >
-                <CardContent className="p-8 text-center">
+<CardContent className="p-5 sm:p-8 text-center">
                   <div className="w-20 h-20 bg-gradient-to-br from-green-400 to-green-600 rounded-full mx-auto mb-4 flex items-center justify-center">
                     <Leaf className="w-10 h-10 text-white" />
                   </div>
@@ -484,7 +485,7 @@ export default function NewDietPlanFlow() {
                 }`}
                 onClick={() => updateFormData('dietType', 'non-vegetarian')}
               >
-                <CardContent className="p-8 text-center">
+<CardContent className="p-5 sm:p-8 text-center">
                   <div className="w-20 h-20 bg-gradient-to-br from-orange-400 to-orange-600 rounded-full mx-auto mb-4 flex items-center justify-center">
                     <Drumstick className="w-10 h-10 text-white" />
                   </div>
@@ -546,7 +547,7 @@ export default function NewDietPlanFlow() {
                     <span>3500 kcal</span>
                   </div>
 
-                  <div className="grid grid-cols-3 gap-4 mt-8">
+<div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-8">
                     {[
                       { value: 1500, label: 'Weight Loss' },
                       { value: 2000, label: 'Maintenance' },
@@ -659,15 +660,17 @@ export default function NewDietPlanFlow() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-green-50 via-blue-50 to-purple-50 py-12 px-4">
+<div className="min-h-screen overflow-x-hidden bg-gradient-to-br from-green-50 via-blue-50 to-purple-50 py-12 px-4">
+  
       <div className="max-w-3xl mx-auto">
+        
         {/* Header */}
         <div className="text-center mb-8">
           <div className="flex items-center justify-center gap-2 mb-4">
             <div className="w-10 h-10 bg-gradient-to-br from-green-500 to-blue-600 rounded-lg"></div>
             <span className="text-2xl" style={{ fontWeight: 700 }}>M2Fitnes</span>
           </div>
-          <h1 className="text-4xl mb-2" style={{ fontWeight: 700 }}>
+<h1 className="text-2xl sm:text-4xl mb-2" style={{ fontWeight: 700 }}>
             Personalized Diet Plan
           </h1>
           <p className="text-gray-600">Step-by-step nutrition planning</p>
@@ -687,8 +690,9 @@ export default function NewDietPlanFlow() {
         </div>
 
         {/* Step Content */}
-        <Card className="shadow-2xl border-2 mb-6">
-          <CardContent className="p-8">
+       <Card className="shadow-2xl border-2 mb-6">
+  <CardContent className="p-4 sm:p-6 md:p-8">
+
             <AnimatePresence mode="wait">
               {renderStep()}
             </AnimatePresence>
@@ -697,7 +701,7 @@ export default function NewDietPlanFlow() {
 
         {/* Navigation Buttons */}
         {currentStep > 1 && currentStep < 6 && (
-          <div className="flex gap-4">
+<div className="flex flex-col sm:flex-row gap-4">
             <Button
               onClick={handlePrevStep}
               variant="outline"
@@ -727,6 +731,7 @@ export default function NewDietPlanFlow() {
           >
             ← Back to Home
           </button>
+          
         </div>
       </div>
     </div>

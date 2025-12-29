@@ -6,7 +6,7 @@ import { Avatar, AvatarFallback } from './ui/avatar';
 import { Input } from './ui/input';
 import { Home, User, ArrowLeft, Heart, MessageCircle, Share2, MapPin, TrendingUp, Dumbbell } from 'lucide-react';
 import { ImageWithFallback } from './figma/ImageWithFallback';
-import { toast } from 'sonner@2.0.3';
+import { toast } from 'sonner';
 
 interface PostData {
   id: string;

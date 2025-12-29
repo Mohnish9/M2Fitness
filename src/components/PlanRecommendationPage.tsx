@@ -3,7 +3,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import { Button } from './ui/button';
 import { Card, CardContent } from './ui/card';
 import { Home, CheckCircle, ArrowLeft, ArrowRight, Utensils, Dumbbell, Download } from 'lucide-react';
-import { toast } from 'sonner@2.0.3';
+import { toast } from 'sonner';
 
 export default function PlanRecommendationPage() {
   const navigate = useNavigate();

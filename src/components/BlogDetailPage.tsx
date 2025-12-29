@@ -3,7 +3,7 @@ import { Button } from './ui/button';
 import { Card, CardContent } from './ui/card';
 import { Home, User, ArrowLeft, Clock, User as UserIcon, Share2, Heart, MessageCircle } from 'lucide-react';
 import { ImageWithFallback } from './figma/ImageWithFallback';
-import { toast } from 'sonner@2.0.3';
+import { toast } from 'sonner';
 
 export default function BlogDetailPage() {
   const navigate = useNavigate();

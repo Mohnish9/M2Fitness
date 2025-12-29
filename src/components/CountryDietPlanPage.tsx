@@ -7,7 +7,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from './ui/tabs';
 import { ArrowLeft, Home, LayoutDashboard, Eye, Download, Share2, Settings, Coffee, Salad, Cookie, UtensilsCrossed, Flame, Drumstick, Plus, Check } from 'lucide-react';
 import { ImageWithFallback } from './figma/ImageWithFallback';
 import { getCountryByCode, CountryDietMeal, filterMealsByDietType } from '../utils/countryDietData';
-import { toast } from 'sonner@2.0.3';
+import { toast } from 'sonner';
 
 interface SelectedMeal {
   category: string;
@@ -46,44 +46,45 @@ export default function CountryDietPlanPage() {
     return null;
   }
 
-  const mealCategories = [
-    {
-      id: 'breakfast',
-      title: 'Breakfast',
-      icon: Coffee,
-      emoji: '🍳',
-      color: 'from-orange-500 to-yellow-500',
-      meals: filterMealsByDietType(country.breakfast, dietPreference),
-      image: 'https://images.unsplash.com/photo-1642339800099-921df1a0a958?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxoZWFsdGh5JTIwZm9vZCUyMGJyZWFrZmFzdHxlbnwxfHx8fDE3NjI2MTYzMjR8MA&ixlib=rb-4.1.0&q=80&w=1080'
-    },
-    {
-      id: 'lunch',
-      title: 'Lunch',
-      icon: Salad,
-      emoji: '🍗',
-      color: 'from-green-500 to-emerald-500',
-      meals: filterMealsByDietType(country.lunch, dietPreference),
-      image: 'https://images.unsplash.com/photo-1578679664605-80268ff31300?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxoZWFsdGh5JTIwbHVuY2glMjBzYWxhZHxlbnwxfHx8fDE3NjI2NDUyMTd8MA&ixlib=rb-4.1.0&q=80&w=1080'
-    },
-    {
-      id: 'snacks',
-      title: 'Snacks',
-      icon: Cookie,
-      emoji: '🥜',
-      color: 'from-purple-500 to-pink-500',
-      meals: filterMealsByDietType(country.snacks, dietPreference),
-      image: 'https://images.unsplash.com/photo-1671981200629-014c03829abb?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxoZWFsdGh5JTIwc25hY2tzJTIwbnV0c3xlbnwxfHx8fDE3NjI2NzQyNzZ8MA&ixlib=rb-4.1.0&q=80&w=1080'
-    },
-    {
-      id: 'dinner',
-      title: 'Dinner',
-      icon: UtensilsCrossed,
-      emoji: '🍽',
-      color: 'from-blue-500 to-indigo-500',
-      meals: filterMealsByDietType(country.dinner, dietPreference),
-      image: 'https://images.unsplash.com/photo-1753775290395-09e3cb0b6f70?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxoZWFsdGh5JTIwZGlubmVyJTIwZ3JpbGxlZHxlbnwxfHx8fDE3NjI2NzQyNzZ8MA&ixlib=rb-4.1.0&q=80&w=1080'
-    }
-  ];
+const mealCategories = [
+  {
+    id: 'breakfast',
+    title: 'Breakfast',
+    icon: Coffee,
+    emoji: '🍳',
+    color: 'from-orange-500 to-yellow-500',
+    meals: filterMealsByDietType(country.breakfast, dietPreference),
+    image: 'https://images.unsplash.com/photo-1512058564366-18510be2db19?auto=format&w=1080&q=80',
+  },
+  {
+    id: 'lunch',
+    title: 'Lunch',
+    icon: Salad,
+    emoji: '🍗',
+    color: 'from-green-500 to-emerald-500',
+    meals: filterMealsByDietType(country.lunch, dietPreference),
+    image: 'https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?auto=format&w=1080&q=80',
+  },
+  {
+    id: 'snacks',
+    title: 'Snacks',
+    icon: Cookie,
+    emoji: '🥜',
+    color: 'from-purple-500 to-pink-500',
+    meals: filterMealsByDietType(country.snacks, dietPreference),
+    image: 'https://images.unsplash.com/photo-1580408956578-9007c8356f20?auto=format&w=1080&q=80',
+  },
+  {
+    id: 'dinner',
+    title: 'Dinner',
+    icon: UtensilsCrossed,
+    emoji: '🍽',
+    color: 'from-blue-500 to-indigo-500',
+    meals: filterMealsByDietType(country.dinner, dietPreference),
+    image: 'https://images.unsplash.com/photo-1604908176997-1251884b08a3?auto=format&w=1080&q=80',
+  },
+];
+
 
   // Calculate total stats from selected meals
   const totalProtein = selectedMeals.reduce((sum, item) => {

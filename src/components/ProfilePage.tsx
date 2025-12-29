@@ -154,7 +154,7 @@ export default function ProfilePage() {
       </aside>
 
       {/* 🔹 Main Content */}
-      <div className="pt-4 pb-20 px-4 sm:px-6 lg:px-8 md:ml-64">
+<div className="pt-4 pb-28 px-4 sm:px-6 lg:px-8 md:ml-64">
         <div className="max-w-4xl mx-auto">
           {/* Page header */}
           <div className="mb-6 sm:mb-8 mt-2 md:mt-8">
@@ -245,7 +245,7 @@ export default function ProfilePage() {
                   )}
                 </div>
               </CardHeader>
-              <CardContent className="space-y-6">
+<CardContent className="space-y-5 sm:space-y-6">
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div className="space-y-2">
                     <Label htmlFor="name">Full Name</Label>
@@ -272,7 +272,7 @@ export default function ProfilePage() {
                   </div>
                 </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+<div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-8">
                   <div className="space-y-2">
                     <Label htmlFor="age">Age</Label>
                     <Input
