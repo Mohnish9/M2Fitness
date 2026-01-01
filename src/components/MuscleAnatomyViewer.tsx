@@ -33,10 +33,10 @@ import {
   exerciseDatabase,
   getRelatedExercisesByMuscle,
 } from '../utils/exerciseMuscleDatabase';
-import exampleImage from 'figma:asset/a72ea76144d069fc56114a7b235b3879b3e8b2c2.png';
-import benchPressImage from 'figma:asset/9d594596acf29cebe918f79a6f54d011a4733fae.png';
-import squatsImage from 'figma:asset/d54784bf34f25c7157617145c68dcdf6d2d7b53e.png';
-import deadliftImage from 'figma:asset/a40bc557e9d2b6876b6cea64d4e50d89108e2b58.png';
+import exampleImage from '@/assets/a72ea76144d069fc56114a7b235b3879b3e8b2c2.png';
+import benchPressImage from '@/assets/9d594596acf29cebe918f79a6f54d011a4733fae.png';
+import squatsImage from '@/assets/d54784bf34f25c7157617145c68dcdf6d2d7b53e.png';
+import deadliftImage from '@/assets/a40bc557e9d2b6876b6cea64d4e50d89108e2b58.png';
 
 interface MuscleAnatomyViewerProps {
   selectedExerciseId?: string;

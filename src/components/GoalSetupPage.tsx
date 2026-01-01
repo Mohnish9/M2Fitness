@@ -3,7 +3,7 @@ import { useNavigate, Link, useSearchParams } from 'react-router-dom';
 import { Button } from './ui/button';
 import { Card, CardContent } from './ui/card';
 import { Home, Target, TrendingUp, TrendingDown, Activity, ArrowLeft, ArrowRight } from 'lucide-react';
-import { toast } from 'sonner@2.0.3';
+import { toast } from 'sonner';
 
 export default function GoalSetupPage() {
   const navigate = useNavigate();
