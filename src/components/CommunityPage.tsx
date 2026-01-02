@@ -28,6 +28,8 @@ import { toast } from 'sonner';
 // ✅ NEW: shared mobile header + bottom nav
 import MobileBottomNav from './MobileBottomNav';
 
+
+
 interface Video {
   id: number;
   title: string;
@@ -644,11 +646,12 @@ const handleVideoShare = (videoId: number) => {
       {/* Floating Action Button - Create Post */}
       <button
         onClick={() => navigate('/community/create-post')}
-        className="fixed bottom-24 right-8 w-16 h-16 bg-gradient-to-r from-orange-500 to-purple-600 hover:from-orange-600 hover:to-purple-700 rounded-full shadow-2xl hover:shadow-3xl flex items-center justify-center z-50 transition-all hover:scale-110"
+        className="fixed bottom-8 right-8 w-16 h-16 bg-gradient-to-r from-orange-500 to-purple-600 hover:from-orange-600 hover:to-purple-700 rounded-full shadow-2xl hover:shadow-3xl flex items-center justify-center z-50 transition-all hover:scale-110"
         aria-label="Create Post"
       >
         <Plus className="w-8 h-8 text-white" strokeWidth={3} />
       </button>
+
 
       {/* Mobile bottom nav */}
       <MobileBottomNav />
