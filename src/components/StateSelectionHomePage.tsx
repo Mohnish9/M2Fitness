@@ -179,7 +179,7 @@ const allExercises = workoutDatabase.flatMap(workout =>
    <div className="min-h-screen bg-white">
   {/* Mobile Header (only on phones) */}
   <MobileHeader
-    onMenuClick={() => setIsMobileMenuOpen(true)}
+    
   />
 
       {/* 🔹 Tier 1 — Navigation Bar (desktop only) */}
