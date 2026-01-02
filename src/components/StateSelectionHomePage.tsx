@@ -15,6 +15,50 @@ import MobileHamburgerMenu from './MobileHamburgerMenu';
 
 export default function StateSelectionHomePage() {
   const navigate = useNavigate();
+  
+  const generateExerciseSlug = (exerciseName: string): string => {
+  const exerciseSlugMap: Record<string, string> = {
+    'bench press': 'bench-press',
+    'barbell bench press': 'bench-press',
+    'squats': 'barbell-squat',
+    'barbell squat': 'barbell-squat',
+    'deadlift': 'deadlift',
+    'barbell deadlift': 'deadlift',
+    'push-ups': 'push-ups',
+    'push ups': 'push-ups',
+    'plank': 'plank',
+    'plank hold': 'plank',
+    'lunges': 'lunges',
+    'burpees': 'burpees',
+    'pull-ups': 'pull-ups',
+    'overhead press': 'overhead-press',
+    'barbell row': 'barbell-row',
+  };
+
+  const normalized = exerciseName.toLowerCase().trim();
+
+  return (
+    exerciseSlugMap[normalized] ??
+    normalized
+      .replace(/[^\w\s-]/g, '')
+      .replace(/\s+/g, '-')
+      .replace(/-+/g, '-')
+      .replace(/^-|-$/g, '')
+  );
+};
+const allExercises = workoutDatabase.flatMap(workout =>
+  workout.exercises.map(exercise => ({
+    name: exercise.name,
+    target: exercise.target,
+    sets: exercise.sets,
+    reps: exercise.reps,
+    workoutName: workout.name,
+    workoutSlug: workout.slug,
+    level: workout.level,
+    exerciseSlug: generateExerciseSlug(exercise.name),
+  }))
+);
+
   const [searchQuery, setSearchQuery] = useState('');
   const [stateSearchQuery, setStateSearchQuery] = useState('');
   const [isSearchFocused, setIsSearchFocused] = useState(false);
@@ -81,14 +125,8 @@ export default function StateSelectionHomePage() {
   );
 
   // Workout suggestions
-  const workoutSuggestions = [
-    'Bench Press',
-    'Squats',
-    'Deadlift',
-    'Push-ups',
-    'Lunges',
-    'Plank',
-  ];
+  const workoutSuggestions = allExercises;
+
 
   // Get workouts from database based on filter
   const getFilteredWorkouts = (): Workout[] => {
@@ -129,30 +167,13 @@ export default function StateSelectionHomePage() {
       comments: 45,
     },
   ];
+  
+  
 
-  const handleSearch = (query: string) => {
-    const lowerQuery = query.toLowerCase();
-    
-    // Check if it's a workout search
-    const isWorkout = workoutSuggestions.some(w => w.toLowerCase().includes(lowerQuery)) ||
-                      lowerQuery.includes('workout') || 
-                      lowerQuery.includes('exercise');
-    
-    // Check if it's a state search
-    const isState = stateFood.some(s => s.state.toLowerCase().includes(lowerQuery));
-    
-    if (isWorkout) {
-      navigate('/workouts');
-    } else if (isState) {
-      // Find matching state and navigate to diet setup
-      const matchedState = stateFood.find(s => s.state.toLowerCase().includes(lowerQuery));
-      if (matchedState) {
-        navigate(matchedState.route);
-      }
-    } else {
-      navigate('/workouts');
-    }
-  };
+  const handleSearch = (_query: string) => {
+  navigate('/workouts');
+};
+
 
   return (
    <div className="min-h-screen bg-white">
@@ -176,7 +197,7 @@ export default function StateSelectionHomePage() {
             <div className="relative flex-1 max-w-xl">
               <Search className="absolute left-5 top-1/2 transform -translate-y-1/2 w-6 h-6 text-gray-400 z-10" />
               <Input
-                placeholder="Search workouts, states, diet plans, or anything fitness..."
+                placeholder="Search workouts and exercises..."
                 className="pl-14 pr-6 h-16 text-lg bg-gray-50 border-2 border-gray-200 focus:border-blue-400 transition-all rounded-2xl"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
@@ -192,74 +213,61 @@ export default function StateSelectionHomePage() {
                 <div className="absolute top-full left-0 right-0 mt-2 bg-white rounded-2xl shadow-2xl border-2 border-blue-300 p-6 z-[100] min-w-[600px]">
                   <div className="grid md:grid-cols-2 gap-4">
                     {/* Workout Suggestions */}
-                    {workoutSuggestions.filter(s => s.toLowerCase().includes(searchQuery.toLowerCase())).length > 0 && (
-                      <div>
-                        <p className="text-sm text-gray-600 mb-3 uppercase tracking-wide" style={{ fontWeight: 700 }}>
-                          🏋️ Workouts & Exercises
-                        </p>
-                        <div className="space-y-2">
-                          {workoutSuggestions
-                            .filter(s => s.toLowerCase().includes(searchQuery.toLowerCase()))
-                            .slice(0, 5)
-                            .map((suggestion, idx) => (
-                              <button
-                                key={idx}
-                                onClick={() => {
-                                  setSearchQuery(suggestion);
-                                  handleSearch(suggestion);
-                                }}
-                                className="w-full text-left p-3 rounded-lg hover:bg-blue-50 transition-colors border border-transparent hover:border-blue-200"
-                              >
-                                <span className="text-blue-600 mr-2">🏋️</span>
-                                <span style={{ fontWeight: 600 }}>{suggestion}</span>
-                              </button>
-                            ))}
-                        </div>
-                      </div>
-                    )}
+                    {workoutSuggestions.filter(exercise =>
+                    exercise.name.toLowerCase().includes(searchQuery.toLowerCase())
+                    ).length > 0 && (
+                    <div>
+                    <p className="text-sm text-gray-600 mb-3 uppercase tracking-wide font-bold">
+      🏋️ Workouts & Exercises
+    </p>
+
+    <div className="space-y-2">
+      {workoutSuggestions
+        .filter(exercise =>
+          exercise.name.toLowerCase().includes(searchQuery.toLowerCase())
+        )
+        .slice(0, 6)
+        .map((exercise, idx: number) => (
+          <button
+            key={idx}
+            onClick={() => {
+              navigate(`/exercise/${exercise.exerciseSlug}`);
+              setSearchQuery('');
+              setIsSearchFocused(false);
+            }}
+            className="w-full text-left p-3 rounded-lg hover:bg-blue-50 transition"
+          >
+            <span className="text-blue-600 mr-2">🏋️</span>
+            <span className="font-semibold">{exercise.name}</span>
+          </button>
+        ))}
+    </div>
+  </div>
+)}
+
                     
-                    {/* State/Diet Suggestions */}
-                    {stateFood.filter(s => s.state.toLowerCase().includes(searchQuery.toLowerCase())).length > 0 && (
-                      <div>
-                        <p className="text-sm text-gray-600 mb-3 uppercase tracking-wide" style={{ fontWeight: 700 }}>
-                          🍛 Regional Diet Plans
-                        </p>
-                        <div className="space-y-2">
-                          {stateFood
-                            .filter(s => s.state.toLowerCase().includes(searchQuery.toLowerCase()))
-                            .slice(0, 5)
-                            .map((state, idx) => (
-                              <button
-                                key={idx}
-                                onClick={() => {
-                                  setSearchQuery(state.state);
-                                  navigate(state.route);
-                                }}
-                                className="w-full text-left p-3 rounded-lg hover:bg-green-50 transition-colors border border-transparent hover:border-green-200"
-                              >
-                                <div className="flex items-center justify-between">
-                                  <div>
-                                    <span className="text-green-600 mr-2">🍛</span>
-                                    <span style={{ fontWeight: 600 }}>{state.state}</span>
-                                  </div>
-                                  <span className="text-xs text-gray-500">{state.protein}</span>
-                                </div>
-                                <p className="text-xs text-gray-500 ml-6">{state.meal}</p>
-                              </button>
-                            ))}
-                        </div>
-                      </div>
-                    )}
+                  
+                    
                   </div>
                   
                   {/* No results message */}
-                  {workoutSuggestions.filter(s => s.toLowerCase().includes(searchQuery.toLowerCase())).length === 0 && 
-                   stateFood.filter(s => s.state.toLowerCase().includes(searchQuery.toLowerCase())).length === 0 && (
-                    <div className="text-center py-4">
-                      <p className="text-gray-500">No suggestions found for "{searchQuery}"</p>
-                      <p className="text-sm text-gray-400 mt-1">Try searching for workouts, states, or diet plans</p>
-                    </div>
-                  )}
+                  {/* No results message */}
+{workoutSuggestions.filter(exercise =>
+  exercise.name.toLowerCase().includes(searchQuery.toLowerCase())
+).length === 0 &&
+ stateFood.filter(state =>
+  state.state.toLowerCase().includes(searchQuery.toLowerCase())
+).length === 0 && (
+  <div className="text-center py-4">
+    <p className="text-gray-500">
+      No suggestions found for "{searchQuery}"
+    </p>
+    <p className="text-sm text-gray-400 mt-1">
+      Try searching for workouts or exercises
+    </p>
+  </div>
+)}
+
                 </div>
               )}
             </div>

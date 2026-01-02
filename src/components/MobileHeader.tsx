@@ -8,6 +8,9 @@ interface MobileHeaderProps {
   onSearch?: (query: string) => void;
   showSearch?: boolean;
   showMenu?: boolean;
+
+  onMenuClick?: () => void;
+  isMenuOpen?: boolean;
 }
 
 export default function MobileHeader({

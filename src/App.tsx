@@ -82,6 +82,7 @@ export default function App() {
           <Route path="/workout/:slug" element={<WorkoutDetailPage />} />
           <Route path="/exercise/:exerciseSlug" element={<WorkoutExerciseDetailPage />} />
           <Route path="/community/post/:postId" element={<CommunityPostDetailPage />} />
+          <Route path="/community/create-post" element={<CreatePostPage />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
         <Toaster />
