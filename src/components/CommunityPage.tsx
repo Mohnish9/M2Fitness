@@ -24,7 +24,7 @@ import {
 } from 'lucide-react';
 import { ImageWithFallback } from './figma/ImageWithFallback';
 import { toast } from 'sonner';
-
+import FloatingCreatePostFAB from './FloatingCreatePostFAB';
 // ✅ NEW: shared mobile header + bottom nav
 import MobileBottomNav from './MobileBottomNav';
 
@@ -643,14 +643,16 @@ const handleVideoShare = (videoId: number) => {
         </div>
       </main>
 
-      {/* Floating Action Button - Create Post */}
+      {/* Floating Action Button - Create Post
       <button
         onClick={() => navigate('/community/create-post')}
         className="fixed bottom-8 right-8 w-16 h-16 bg-gradient-to-r from-orange-500 to-purple-600 hover:from-orange-600 hover:to-purple-700 rounded-full shadow-2xl hover:shadow-3xl flex items-center justify-center z-50 transition-all hover:scale-110"
         aria-label="Create Post"
       >
         <Plus className="w-8 h-8 text-white" strokeWidth={3} />
-      </button>
+      </button> */}
+      <FloatingCreatePostFAB />
+
 
 
       {/* Mobile bottom nav */}
